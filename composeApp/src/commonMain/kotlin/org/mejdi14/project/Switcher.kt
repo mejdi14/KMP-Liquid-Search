@@ -36,7 +36,7 @@ fun lerp(a: Float, b: Float, t: Float): Float = a + (b - a) * t
 
 @Composable
 fun SwitcherCompose(
-    modifier: Modifier = Modifier.size(150.dp),
+    modifier: Modifier = Modifier.size(50.dp),
     isChecked: Boolean,
     onColor: Color,
     offColor: Color,
@@ -135,8 +135,8 @@ fun SwitcherCompose(
         // Add search line
         drawLine(
             color = Color.White,
-            start = Offset((if (!isChecked) ((iconRect.size.width / 2) - (lineSize / 2) ) else 0f) + iconRect.left + (lineSize / 2), iconRect.bottom - elevationPx * 4f),
-            end = Offset((if (!isChecked) ((iconRect.size.width / 2) - (lineSize / 2) ) else 0f) + iconRect.left + (lineSize / 2) , iconRect.bottom + elevationPx * 0.5f + switcherRadius * 0.7f),
+            start = Offset( iconRect.left + (lineSize / 2) + ((iconRect.size.width / 2 ) * iconProgress), iconRect.bottom - (elevationPx) - (lineSize * iconProgress)),
+            end = Offset(iconRect.left + (lineSize / 2) + (iconRect.size.width * iconProgress), iconRect.bottom + elevationPx * 0.5f + switcherRadius * 0.7f - ((lineSize * 2) * iconProgress)),
             strokeWidth = lineSize,
             cap = StrokeCap.Round
         )
