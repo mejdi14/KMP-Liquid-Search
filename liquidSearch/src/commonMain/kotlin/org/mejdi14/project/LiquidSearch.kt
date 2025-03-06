@@ -32,7 +32,6 @@ import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import org.mejdi14.project.AnimatedSearchIcon
 
-
 @Composable
 fun LiquidSearch() {
     var isCheckedemo by remember { mutableStateOf(false) }
@@ -40,7 +39,6 @@ fun LiquidSearch() {
     var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     var cursorOffset by remember { mutableStateOf(0) }
     val density = LocalDensity.current
-    var charWidth by remember { mutableStateOf(0f) }
     var lastInputTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var currentTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
 
@@ -51,11 +49,10 @@ fun LiquidSearch() {
         }
     }
 
-// Blinking animation using infinite transition
     val infiniteTransition = rememberInfiniteTransition()
     val blinkingAlpha by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = 1f, // Not used since keyframes override it
+        targetValue = 1f,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = 900
@@ -68,17 +65,16 @@ fun LiquidSearch() {
         )
     )
 
-// Determine if the user is "actively typing" using a threshold (e.g., 500ms)
     val isTyping = (currentTime - lastInputTime) < 500
-// Use blinkingAlpha when not typing, or full visibility when typing
     val cursorAlpha = if (isTyping) 1f else blinkingAlpha
 
-//val charWidth = with(density) { 14.dp.toPx() }
-    Box(Modifier.height(160.dp).fillMaxWidth()
-        .background(color = Color(0xFF6147ff))
-        .clickable {
-
-        }) {
+    Box(
+        Modifier
+            .height(160.dp)
+            .fillMaxWidth()
+            .background(color = Color(0xFF6147ff))
+            .clickable { }
+    ) {
         BasicTextField(
             value = textFieldValue,
             cursorBrush = SolidColor(Color.Transparent),
@@ -86,18 +82,12 @@ fun LiquidSearch() {
                 textFieldValue = newText
                 lastInputTime = Clock.System.now().toEpochMilliseconds()
             },
-
             modifier = Modifier
                 .fillMaxSize()
-
                 .align(Alignment.CenterStart)
                 .padding(start = 25.dp)
                 .onFocusChanged { focusState ->
-                    if (focusState.isFocused) {
-                        isCheckedemo = true
-                    } else {
-                        isCheckedemo = false
-                    }
+                    isCheckedemo = focusState.isFocused
                 },
             onTextLayout = { result ->
                 layoutResult = result
@@ -119,17 +109,18 @@ fun LiquidSearch() {
         )
 
         AnimatedSearchIcon(
-            modifier = Modifier.size(150.dp).align(Alignment.CenterStart)
+            modifier = Modifier
+                .size(150.dp)
+                .align(Alignment.CenterStart)
                 .graphicsLayer {
                     translationX = cursorOffset.toFloat() + 2f
-                    //alpha = if(isCheckedemo) cursorAlpha else 1f
-                    alpha = 1f
+                    alpha = if(isCheckedemo) cursorAlpha else 1f
                 },
             isChecked = isCheckedemo,
             onColor = Color(0xFF6147ff),
             offColor = Color(0xFF6147ff),
             switchElevation = 2.dp,
-            onCheckedChange = { /* update your state */ }
+            onCheckedChange = { }
         )
     }
 }
