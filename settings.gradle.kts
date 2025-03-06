@@ -35,3 +35,4 @@ dependencyResolutionManagement {
 }
 
 include(":composeApp")
+include(":liquidSearch")
