@@ -16,6 +16,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -35,7 +36,7 @@ const val ANIMATION_SPEED_EXIT = 8.0
 
 @Composable
 fun LiquidSearch(
-    modifier: Modifier = Modifier.size(150.dp),
+    modifier: Modifier = Modifier.size(50.dp),
     isChecked: Boolean,
     onColor: Color,
     offColor: Color,
@@ -74,6 +75,9 @@ fun LiquidSearch(
 
     Canvas(
         modifier = modifier
+            .graphicsLayer {
+                translationY = -size.height / 6
+            }
             .clickable { onCheckedChange(!isChecked) }
             .fillMaxSize()
     ) {
