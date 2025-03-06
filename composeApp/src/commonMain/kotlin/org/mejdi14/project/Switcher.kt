@@ -27,16 +27,15 @@ import kotlin.math.min
 const val SWITCHER_ANIMATION_DURATION = 800L
 const val COLOR_ANIMATION_DURATION = 300L
 const val BOUNCE_ANIM_AMPLITUDE_IN = 0.2
-const val BOUNCE_ANIM_AMPLITUDE_OUT = 0.15
+const val BOUNCE_ANIM_AMPLITUDE_OUT = 0.1
 const val BOUNCE_ANIM_FREQUENCY_IN = 14.5
-const val BOUNCE_ANIM_FREQUENCY_OUT = 12.0
+const val ANIMATION_SPEED_EXIT = 8.0
 
-// A simple linear interpolation function
-fun lerp(a: Float, b: Float, t: Float): Float = a + (b - a) * t
+
 
 @Composable
-fun SwitcherCompose(
-    modifier: Modifier = Modifier.size(50.dp),
+fun LiquidSearch(
+    modifier: Modifier = Modifier.size(150.dp),
     isChecked: Boolean,
     onColor: Color,
     offColor: Color,
@@ -44,18 +43,14 @@ fun SwitcherCompose(
     onCheckedChange: (Boolean) -> Unit
 ) {
     val density = LocalDensity.current
-    // Convert elevation to pixels (used as an offset in our drawing)
     val elevationPx = with(density) { switchElevation.toPx() }
 
-    // Create a transition for the two states
-    val transition = updateTransition(targetState = isChecked, label = "SwitcherTransition")
+    val transition = updateTransition(targetState = isChecked, label = "Search Icon Animation")
 
-    // Animate the icon progress (0 when checked, 1 when unchecked)
     val iconProgress by transition.animateFloat(
         transitionSpec = {
-            // Choose different bounce parameters depending on state.
             val amplitude = if (targetState) BOUNCE_ANIM_AMPLITUDE_OUT else BOUNCE_ANIM_AMPLITUDE_IN
-            val frequency = if (targetState) BOUNCE_ANIM_FREQUENCY_OUT else BOUNCE_ANIM_FREQUENCY_IN
+            val frequency = if (targetState) ANIMATION_SPEED_EXIT else BOUNCE_ANIM_FREQUENCY_IN
             tween(
                 durationMillis = SWITCHER_ANIMATION_DURATION.toInt(),
                 easing = Easing { fraction ->
@@ -92,7 +87,7 @@ fun SwitcherCompose(
 
         // Calculate icon geometry based on the switcher size
         val iconRadius = switcherRadius * 0.5f
-        val iconClipRadius = iconRadius / 2.25f
+        val iconClipRadius = iconRadius / 2f
         val iconCollapsedWidth = (iconRadius - iconClipRadius) * 1.1f
         val iconHeight = iconRadius * 2f
 
@@ -132,16 +127,42 @@ fun SwitcherCompose(
             cornerRadius = CornerRadius(switcherRadius , switcherRadius )
         )
 
-        // Add search line
+        val lineAnimProgress = if (isChecked) {
+            // We invert the progress for checked state to match the RoundRect behavior
+            1f - iconProgress
+        } else {
+            // For unchecked state, use the normal progress
+            iconProgress
+        }
+
+// The line bounce effect will match the RoundRect
+        val lineSqueezeFactor = if (isChecked) {
+            // Apply a squeeze factor based on the bounce animation
+            // This creates the same effect as what happens to the RoundRect
+            val bouncePart = exp(-lineAnimProgress / BOUNCE_ANIM_AMPLITUDE_OUT) *
+                    cos(ANIMATION_SPEED_EXIT * lineAnimProgress)
+
+            // Adjust this multiplier to control the intensity of the squeeze
+            1f - (bouncePart * 0.2f)
+        } else {
+            1f // No squeeze effect when going to unchecked state
+        }
+
         drawLine(
             color = Color.White,
-            start = Offset( iconRect.left + (lineSize / 2) + ((iconRect.size.width / 2 ) * iconProgress), iconRect.bottom - (elevationPx) - (lineSize * iconProgress)),
-            end = Offset(iconRect.left + (lineSize / 2) + (iconRect.size.width * iconProgress), iconRect.bottom + elevationPx * 0.5f + switcherRadius * 0.7f - ((lineSize * 2) * iconProgress)),
-            strokeWidth = lineSize,
+            start = Offset(
+                iconRect.left + (lineSize / 2) + (((iconRect.size.width) / 2) * iconProgress),
+                iconRect.bottom - (lineSize / 2) - (elevationPx * 2) - ((lineSize / 2) * iconProgress)
+            ),
+            end = Offset(
+                iconRect.left + (lineSize / 2) + ((iconRect.size.width + lineSize) * iconProgress),
+                iconRect.bottom + elevationPx * 0.5f + switcherRadius * 0.7f - ((lineSize) * iconProgress)
+            ),
+            strokeWidth = lineSize * lineSqueezeFactor.toFloat(), // Apply the bounce effect to stroke width
             cap = StrokeCap.Round
         )
 
-        // Calculate the clip rectangle for the icon
+
         val clipOffset = lerp(0f, iconClipRadius, iconProgress)
         val iconCenter = Offset(iconRect.center.x, iconRect.center.y)
         val iconClipRect = Rect(
@@ -162,3 +183,5 @@ fun SwitcherCompose(
         }
     }
 }
+
+fun lerp(a: Float, b: Float, t: Float): Float = a + (b - a) * t
