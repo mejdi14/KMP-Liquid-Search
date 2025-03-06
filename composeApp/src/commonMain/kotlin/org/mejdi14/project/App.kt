@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
@@ -48,10 +49,11 @@ fun App() {
                 }) {
                 BasicTextField(
                     value = textFieldValue,
-
+                    cursorBrush = SolidColor(Color.Transparent),
                     onValueChange = { newText ->
                         textFieldValue = newText
                     },
+
                     modifier = Modifier
                         .fillMaxSize()
 
