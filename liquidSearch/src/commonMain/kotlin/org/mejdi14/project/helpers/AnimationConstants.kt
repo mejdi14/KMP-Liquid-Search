@@ -1,0 +1,8 @@
+package org.mejdi14.project.helpers
+
+const val SWITCHER_ANIMATION_DURATION = 800L
+const val COLOR_ANIMATION_DURATION = 300L
+const val BOUNCE_ANIM_AMPLITUDE_IN = 0.2
+const val BOUNCE_ANIM_AMPLITUDE_OUT = 0.1
+const val BOUNCE_ANIM_FREQUENCY_IN = 14.5
+const val ANIMATION_SPEED_EXIT = 8.0

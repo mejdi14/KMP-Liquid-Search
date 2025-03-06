@@ -72,6 +72,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+            implementation(project(":liquidSearch"))
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
