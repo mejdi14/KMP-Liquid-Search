@@ -11,6 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -43,6 +44,7 @@ internal fun AnimatedSearchIcon(
     onColor: Color,
     offColor: Color,
     switchElevation: Dp = 4.dp,
+    canvasLineSize: MutableState<Float>,
     onCheckedChange: (Boolean) -> Unit
 ) {
     val density = LocalDensity.current
@@ -109,6 +111,7 @@ internal fun AnimatedSearchIcon(
             (switcherRadius + iconCollapsedWidth / 2f + fixedIconOffset) + elevationPx
         val fixedIconWidth = fixedIconRight - fixedIconLeft
         val lineSize = fixedIconWidth
+        canvasLineSize.value = lineSize
 
         drawRoundRect(
             color = Color.White,

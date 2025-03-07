@@ -4,14 +4,12 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,16 +25,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import org.mejdi14.project.AnimatedSearchIcon
+import org.mejdi14.project.LiquidSearchConfig
 
 @Composable
 fun LiquidSearch(
-    modifier: Modifier = Modifier.height(60.dp).width(300.dp),
+    modifier: Modifier = Modifier,
+    liquidSearchConfig: LiquidSearchConfig = LiquidSearchConfig(),
     isChecked: MutableState<Boolean>,
     onColor: Color = Color(0xFF6147ff),
     offColor: Color = Color(0xFF6147ff),
@@ -49,7 +51,7 @@ fun LiquidSearch(
     var cursorOffset by remember { mutableStateOf(0) }
     var lastInputTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var currentTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
-
+    var canvasLineSize = remember { mutableStateOf(0f) }
     LaunchedEffect(Unit) {
         while (true) {
             currentTime = Clock.System.now().toEpochMilliseconds()
@@ -85,6 +87,7 @@ fun LiquidSearch(
         BasicTextField(
             value = textFieldValue,
             cursorBrush = SolidColor(Color.Transparent),
+            textStyle = TextStyle(fontSize = 20.sp, color = Color.White),
             onValueChange = { newText ->
                 textFieldValue = newText
                 lastInputTime = Clock.System.now().toEpochMilliseconds()
@@ -92,7 +95,7 @@ fun LiquidSearch(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.CenterStart)
-                .padding(start = 25.dp)
+                .padding(start = liquidSearchConfig.height / 2)
                 .onFocusChanged { focusState ->
                     isChecked.value = focusState.isFocused
                 },
@@ -117,16 +120,17 @@ fun LiquidSearch(
 
         AnimatedSearchIcon(
             modifier = Modifier
-                .size(150.dp)
+                .size(liquidSearchConfig.height)
                 .align(Alignment.CenterStart)
                 .graphicsLayer {
-                    translationX = cursorOffset.toFloat() + 2f
+                    translationX = cursorOffset.toFloat() + (canvasLineSize.value / 2)
                     alpha = if (isChecked.value) cursorAlpha else 1f
                 },
             isChecked = isChecked.value,
             onColor = onColor,
             offColor = offColor,
             switchElevation = iconElevation,
+            canvasLineSize,
             onCheckedChange = { onCheckedChange(it) }
         )
     }
