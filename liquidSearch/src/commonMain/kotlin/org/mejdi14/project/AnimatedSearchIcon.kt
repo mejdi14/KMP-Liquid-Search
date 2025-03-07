@@ -7,10 +7,12 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -76,7 +78,10 @@ internal fun AnimatedSearchIcon(
             .graphicsLayer {
                 translationY = -size.height / 6
             }
-            .clickable { onCheckedChange(!isChecked) }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onCheckedChange(!isChecked) }
             .fillMaxSize()
     ) {
         val sizeMin = min(size.width, size.height)
@@ -92,13 +97,16 @@ internal fun AnimatedSearchIcon(
         val baseIconLeft = (switcherRadius - iconCollapsedWidth / 2f - iconOffset) + elevationPx
         val baseIconRight = (switcherRadius + iconCollapsedWidth / 2f + iconOffset) + elevationPx
         val baseIconTop = ((switcherRadius * 2f - iconHeight) / 2f) + elevationPx / 2f
-        val baseIconBottom = (switcherRadius * 2f - (switcherRadius * 2f - iconHeight) / 2f) + elevationPx / 2f
+        val baseIconBottom =
+            (switcherRadius * 2f - (switcherRadius * 2f - iconHeight) / 2f) + elevationPx / 2f
 
         var iconRect = Rect(baseIconLeft, baseIconTop, baseIconRight, baseIconBottom)
         val fixedIconProgress = 0f
         val fixedIconOffset = lerp(0f, iconRadius - iconCollapsedWidth / 2f, fixedIconProgress)
-        val fixedIconLeft = (switcherRadius - iconCollapsedWidth / 2f - fixedIconOffset) + elevationPx
-        val fixedIconRight = (switcherRadius + iconCollapsedWidth / 2f + fixedIconOffset) + elevationPx
+        val fixedIconLeft =
+            (switcherRadius - iconCollapsedWidth / 2f - fixedIconOffset) + elevationPx
+        val fixedIconRight =
+            (switcherRadius + iconCollapsedWidth / 2f + fixedIconOffset) + elevationPx
         val fixedIconWidth = fixedIconRight - fixedIconLeft
         val lineSize = fixedIconWidth
 

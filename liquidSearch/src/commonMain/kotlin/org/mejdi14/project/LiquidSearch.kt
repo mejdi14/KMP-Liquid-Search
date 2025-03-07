@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,21 +26,27 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import org.mejdi14.project.AnimatedSearchIcon
 
 @Composable
-fun LiquidSearch() {
-    var isCheckedemo by remember { mutableStateOf(false) }
+fun LiquidSearch(
+    modifier: Modifier = Modifier.height(60.dp).width(300.dp),
+    isChecked: MutableState<Boolean>,
+    onColor: Color = Color(0xFF6147ff),
+    offColor: Color = Color(0xFF6147ff),
+    iconElevation: Dp = 4.dp,
+    onCheckedChange: (Boolean) -> Unit
+) {
+
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     var cursorOffset by remember { mutableStateOf(0) }
-    val density = LocalDensity.current
     var lastInputTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var currentTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
 
@@ -73,7 +81,6 @@ fun LiquidSearch() {
             .height(160.dp)
             .fillMaxWidth()
             .background(color = Color(0xFF6147ff))
-            .clickable { }
     ) {
         BasicTextField(
             value = textFieldValue,
@@ -87,7 +94,7 @@ fun LiquidSearch() {
                 .align(Alignment.CenterStart)
                 .padding(start = 25.dp)
                 .onFocusChanged { focusState ->
-                    isCheckedemo = focusState.isFocused
+                    isChecked.value = focusState.isFocused
                 },
             onTextLayout = { result ->
                 layoutResult = result
@@ -114,13 +121,13 @@ fun LiquidSearch() {
                 .align(Alignment.CenterStart)
                 .graphicsLayer {
                     translationX = cursorOffset.toFloat() + 2f
-                    alpha = if(isCheckedemo) cursorAlpha else 1f
+                    alpha = if (isChecked.value) cursorAlpha else 1f
                 },
-            isChecked = isCheckedemo,
-            onColor = Color(0xFF6147ff),
-            offColor = Color(0xFF6147ff),
-            switchElevation = 2.dp,
-            onCheckedChange = { }
+            isChecked = isChecked.value,
+            onColor = onColor,
+            offColor = offColor,
+            switchElevation = iconElevation,
+            onCheckedChange = { onCheckedChange(it) }
         )
     }
 }
