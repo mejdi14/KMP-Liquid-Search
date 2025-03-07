@@ -1,3 +1,5 @@
+package org.mejdi14.project
+
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -80,8 +83,12 @@ fun LiquidSearch(
 
     Box(
         Modifier
-            .height(160.dp)
-            .fillMaxWidth()
+            .height(liquidSearchConfig.height)
+            .then(
+                liquidSearchConfig.width?.let {
+                    Modifier.width(it)
+                } ?: Modifier.fillMaxWidth()
+            )
             .background(color = Color(0xFF6147ff))
     ) {
         BasicTextField(

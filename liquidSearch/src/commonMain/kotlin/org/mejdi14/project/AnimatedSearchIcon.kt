@@ -79,9 +79,10 @@ internal fun AnimatedSearchIcon(
     Canvas(
         modifier = modifier
             .graphicsLayer {
-                translationY = -size.height / (if(isChecked) 6 else 12)
+                translationY =
+                    -(canvasLineSize.value + (size.height * (if (isChecked) 0.05f else 0f)))
             }
-            .background(color = Color.Red)
+
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
