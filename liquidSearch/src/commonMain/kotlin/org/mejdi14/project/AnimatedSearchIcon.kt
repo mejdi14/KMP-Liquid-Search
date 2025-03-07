@@ -6,11 +6,9 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -31,11 +29,23 @@ import org.mejdi14.project.helpers.BOUNCE_ANIM_AMPLITUDE_IN
 import org.mejdi14.project.helpers.BOUNCE_ANIM_AMPLITUDE_OUT
 import org.mejdi14.project.helpers.BOUNCE_ANIM_FREQUENCY_IN
 import org.mejdi14.project.helpers.COLOR_ANIMATION_DURATION
+import org.mejdi14.project.helpers.ELEVATION_LINE_FACTOR
+import org.mejdi14.project.helpers.ICON_CLIP_RADIUS_FACTOR
+import org.mejdi14.project.helpers.ICON_COLLAPSED_WIDTH_SCALE
+import org.mejdi14.project.helpers.ICON_RADIUS_FACTOR
+import org.mejdi14.project.helpers.LINE_END_X_FACTOR
+import org.mejdi14.project.helpers.LINE_SQUEEZE_BOUNCE_FACTOR
+import org.mejdi14.project.helpers.LINE_START_X_FACTOR
+import org.mejdi14.project.helpers.RECT_CORNER_FACTOR
 import org.mejdi14.project.helpers.SWITCHER_ANIMATION_DURATION
+import org.mejdi14.project.helpers.SWITCH_RADIUS_LINE_FACTOR
+import org.mejdi14.project.helpers.TRANSLATION_Y_CHECKED_FACTOR
 import org.mejdi14.project.helpers.lerp
 import kotlin.math.cos
 import kotlin.math.exp
 import kotlin.math.min
+
+// Icon dimensions and proportions
 
 
 @Composable
@@ -80,9 +90,8 @@ internal fun AnimatedSearchIcon(
         modifier = modifier
             .graphicsLayer {
                 translationY =
-                    -(canvasLineSize.value + (size.height * (if (isChecked) 0.05f else 0f)))
+                    -(canvasLineSize.value + (size.height * (if (isChecked) TRANSLATION_Y_CHECKED_FACTOR else 0f)))
             }
-
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
@@ -92,9 +101,9 @@ internal fun AnimatedSearchIcon(
         val sizeMin = min(size.width, size.height)
         val switcherRadius = (sizeMin / 2f) - elevationPx
 
-        val iconRadius = switcherRadius * 0.5f
-        val iconClipRadius = iconRadius / 2f
-        val iconCollapsedWidth = (iconRadius - iconClipRadius) * 1.1f
+        val iconRadius = switcherRadius * ICON_RADIUS_FACTOR
+        val iconClipRadius = iconRadius * ICON_CLIP_RADIUS_FACTOR
+        val iconCollapsedWidth = (iconRadius - iconClipRadius) * ICON_COLLAPSED_WIDTH_SCALE
         val iconHeight = iconRadius * 2f
 
         val iconOffset = lerp(0f, iconRadius - iconCollapsedWidth / 2f, iconProgress)
@@ -120,7 +129,10 @@ internal fun AnimatedSearchIcon(
             color = Color.White,
             topLeft = Offset(iconRect.left, iconRect.top),
             size = Size(iconRect.width, iconRect.height),
-            cornerRadius = CornerRadius(switcherRadius, switcherRadius)
+            cornerRadius = CornerRadius(
+                switcherRadius * RECT_CORNER_FACTOR,
+                switcherRadius * RECT_CORNER_FACTOR
+            )
         )
 
         val lineAnimProgress = if (isChecked) {
@@ -132,7 +144,7 @@ internal fun AnimatedSearchIcon(
         val lineSqueezeFactor = if (isChecked) {
             val bouncePart = exp(-lineAnimProgress / BOUNCE_ANIM_AMPLITUDE_OUT) *
                     cos(ANIMATION_SPEED_EXIT * lineAnimProgress)
-            1f - (bouncePart * 0.2f)
+            1f - (bouncePart * LINE_SQUEEZE_BOUNCE_FACTOR)
         } else {
             1f
         }
@@ -140,12 +152,12 @@ internal fun AnimatedSearchIcon(
         drawLine(
             color = Color.White,
             start = Offset(
-                iconRect.left + (lineSize / 2) + (((iconRect.size.width) / 2) * iconProgress),
-                iconRect.bottom - (lineSize / 2) - ((lineSize / 2) * iconProgress)
+                iconRect.left + (lineSize * LINE_START_X_FACTOR) + (((iconRect.size.width) / 2) * iconProgress),
+                iconRect.bottom - (lineSize * LINE_START_X_FACTOR) - ((lineSize * LINE_START_X_FACTOR) * iconProgress)
             ),
             end = Offset(
-                iconRect.left + (lineSize / 2) + ((iconRect.size.width + lineSize) * iconProgress),
-                iconRect.bottom + elevationPx * 0.5f + switcherRadius * 0.7f - ((lineSize) * iconProgress)
+                iconRect.left + (lineSize * LINE_END_X_FACTOR) + ((iconRect.size.width + lineSize) * iconProgress),
+                iconRect.bottom + elevationPx * ELEVATION_LINE_FACTOR + switcherRadius * SWITCH_RADIUS_LINE_FACTOR - ((lineSize) * iconProgress)
             ),
             strokeWidth = lineSize * lineSqueezeFactor.toFloat(),
             cap = StrokeCap.Round
