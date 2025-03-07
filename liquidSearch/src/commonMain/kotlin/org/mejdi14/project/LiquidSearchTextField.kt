@@ -31,7 +31,7 @@ internal fun BoxScope.LiquidSearchTextField(
     BasicTextField(
         value = textFieldValue.value,
         cursorBrush = SolidColor(Color.Transparent),
-        textStyle = TextStyle(fontSize = (canvasLineSize.value * 4).sp, color = Color.White),
+        textStyle = TextStyle(fontSize = (canvasLineSize.value * 2).sp, color = Color.White),
         onValueChange = { newText ->
             textFieldValue.value = newText
             lastInputTime.value = Clock.System.now().toEpochMilliseconds()

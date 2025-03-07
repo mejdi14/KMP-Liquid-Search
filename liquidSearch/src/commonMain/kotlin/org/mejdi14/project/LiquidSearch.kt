@@ -106,7 +106,7 @@ fun LiquidSearch(
                     translationX =
                         cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
                             LayoutDirection.Ltr
-                        ).value + (canvasLineSize.value)
+                        ).toPx() + (canvasLineSize.value)
                     alpha = if (isChecked.value) cursorAlpha else 1f
                 },
             isChecked = isChecked.value,
@@ -116,6 +116,7 @@ fun LiquidSearch(
             canvasLineSize,
             onCheckedChange = { onCheckedChange(it) }
         )
+        AnimatedCancelIcon(Modifier.size(40.dp).align(Alignment.CenterEnd).padding(10.dp), canvasLineSize)
     }
 }
 
