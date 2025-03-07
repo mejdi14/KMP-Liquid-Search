@@ -13,12 +13,10 @@ const val ICON_CLIP_RADIUS_FACTOR = 0.5f
 const val ICON_COLLAPSED_WIDTH_SCALE = 1.1f
 const val TRANSLATION_Y_CHECKED_FACTOR = 0.06f
 
-// Line constants
 const val LINE_START_X_FACTOR = 0.5f
 const val LINE_END_X_FACTOR = 0.5f
 const val ELEVATION_LINE_FACTOR = 0.5f
 const val SWITCH_RADIUS_LINE_FACTOR = 0.7f
 const val LINE_SQUEEZE_BOUNCE_FACTOR = 0.2f
 
-// Animation constants
 const val RECT_CORNER_FACTOR = 1.0f
