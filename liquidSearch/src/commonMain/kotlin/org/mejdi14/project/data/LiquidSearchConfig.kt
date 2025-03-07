@@ -14,5 +14,6 @@ data class LiquidSearchConfig(
     val backgroundColor: Color = Color(0xFF6147ff),
     val padding: PaddingValues = PaddingValues(20.dp),
     val textFieldConfig: TextFieldConfig = TextFieldConfig(),
-    val liquidSearchIconPosition: LiquidSearchIconPosition = LiquidSearchIconPosition.LEFT
+    val liquidSearchIconPosition: LiquidSearchIconPosition = LiquidSearchIconPosition.LEFT,
+    val cancelIconSizeRatio: Int = 5,
 )

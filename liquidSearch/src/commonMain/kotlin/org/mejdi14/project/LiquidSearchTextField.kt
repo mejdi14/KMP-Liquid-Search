@@ -27,11 +27,14 @@ internal fun BoxScope.LiquidSearchTextField(
     isChecked: MutableState<Boolean>,
     cursorOffset: MutableState<Int>
 ){
-
     BasicTextField(
         value = textFieldValue.value,
         cursorBrush = SolidColor(Color.Transparent),
-        textStyle = TextStyle(fontSize = (canvasLineSize.value * 2).sp, color = Color.White),
+        textStyle = TextStyle(fontSize = (canvasLineSize.value * (when(isDesktop){
+            PlatformName.DESKTOP -> 4f
+            PlatformName.WEB -> 4f
+            PlatformName.MOBILE -> 2f
+        })).sp, color = Color.White),
         onValueChange = { newText ->
             textFieldValue.value = newText
             lastInputTime.value = Clock.System.now().toEpochMilliseconds()
@@ -39,7 +42,6 @@ internal fun BoxScope.LiquidSearchTextField(
         modifier = Modifier
             .fillMaxSize()
             .align(Alignment.CenterStart)
-            .padding(start = liquidSearchConfig.height / 2)
             .onFocusChanged { focusState ->
                 isChecked.value = focusState.isFocused
             },

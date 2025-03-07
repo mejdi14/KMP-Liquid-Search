@@ -6,6 +6,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
@@ -97,6 +98,7 @@ internal fun AnimatedSearchIcon(
                 indication = null
             ) { onCheckedChange(!isChecked) }
             .fillMaxSize()
+
     ) {
         val sizeMin = min(size.width, size.height)
         val switcherRadius = (sizeMin / 2f) - elevationPx

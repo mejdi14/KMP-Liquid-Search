@@ -8,7 +8,10 @@ import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -86,7 +89,10 @@ fun LiquidSearch(
                     Modifier.width(it)
                 } ?: Modifier.fillMaxWidth()
             )
-            .background(color = Color(0xFF6147ff), shape = liquidSearchConfig.shape)
+            .background(
+                color = liquidSearchConfig.backgroundColor,
+                shape = liquidSearchConfig.shape
+            )
             .padding(liquidSearchConfig.padding)
     ) {
         LiquidSearchTextField(
@@ -98,25 +104,34 @@ fun LiquidSearch(
             cursorOffset
         )
 
-        AnimatedSearchIcon(
-            modifier = Modifier
-                .size(liquidSearchConfig.height)
-                .align(Alignment.CenterStart)
-                .graphicsLayer {
-                    translationX =
-                        cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
-                            LayoutDirection.Ltr
-                        ).toPx() + (canvasLineSize.value)
-                    alpha = if (isChecked.value) cursorAlpha else 1f
-                },
-            isChecked = isChecked.value,
-            onColor = onColor,
-            offColor = offColor,
-            switchElevation = iconElevation,
-            canvasLineSize,
-            onCheckedChange = { onCheckedChange(it) }
+        Row(Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxHeight().weight(1f)) {
+                AnimatedSearchIcon(
+                    modifier = Modifier
+                        .size(liquidSearchConfig.height)
+                        .align(Alignment.CenterStart)
+                        .graphicsLayer {
+                            translationX =
+                                cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
+                                    LayoutDirection.Ltr
+                                )
+                                    .toPx() + (canvasLineSize.value / 2) - (liquidSearchConfig.height.toPx() / 2)
+                            alpha = if (isChecked.value) cursorAlpha else 1f
+                        },
+                    isChecked = isChecked.value,
+                    onColor = onColor,
+                    offColor = offColor,
+                    switchElevation = iconElevation,
+                    canvasLineSize,
+                    onCheckedChange = { onCheckedChange(it) }
+                )
+            }
+        }
+        AnimatedCancelIcon(
+            Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+                .align(Alignment.CenterEnd),
+            canvasLineSize
         )
-        AnimatedCancelIcon(Modifier.size(40.dp).align(Alignment.CenterEnd).padding(10.dp), canvasLineSize)
     }
 }
 
