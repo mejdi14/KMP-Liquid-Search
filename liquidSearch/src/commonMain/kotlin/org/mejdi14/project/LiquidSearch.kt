@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -48,6 +47,7 @@ fun LiquidSearch(
 ) {
 
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+    var layoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
     var cursorOffset by remember { mutableStateOf(0) }
     var lastInputTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var currentTime by remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
@@ -80,11 +80,9 @@ fun LiquidSearch(
 
     Box(
         Modifier
-            .height(liquidSearchConfig.height)
-            .then(
-                liquidSearchConfig.width?.let { Modifier.width(it) } ?: Modifier.fillMaxWidth()
-            )
-            .background(color = liquidSearchConfig.backgroundColor)
+            .height(160.dp)
+            .fillMaxWidth()
+            .background(color = Color(0xFF6147ff))
     ) {
         BasicTextField(
             value = textFieldValue,
@@ -102,6 +100,7 @@ fun LiquidSearch(
                     isChecked.value = focusState.isFocused
                 },
             onTextLayout = { result ->
+                layoutResult = result
                 val currentIndex = textFieldValue.selection.start
                 var offset = 0f
                 for (i in 0 until currentIndex) {

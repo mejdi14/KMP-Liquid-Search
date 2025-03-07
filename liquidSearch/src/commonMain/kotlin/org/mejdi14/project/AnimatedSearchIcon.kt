@@ -6,6 +6,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,7 +40,7 @@ import kotlin.math.min
 
 @Composable
 internal fun AnimatedSearchIcon(
-    modifier: Modifier = Modifier.size(50.dp),
+    modifier: Modifier,
     isChecked: Boolean,
     onColor: Color,
     offColor: Color,
@@ -78,8 +79,9 @@ internal fun AnimatedSearchIcon(
     Canvas(
         modifier = modifier
             .graphicsLayer {
-                translationY = -size.height / 6
+                translationY = -size.height / (if(isChecked) 6 else 12)
             }
+            .background(color = Color.Red)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null

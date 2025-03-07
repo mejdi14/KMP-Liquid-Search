@@ -124,3 +124,10 @@ compose.desktop {
         }
     }
 }
+
+if ((project.findProperty("RELEASE_SIGNING_ENABLED")?.toString() ?: "false").toBoolean()) {
+    signing {
+        useGpgCmd()
+        sign(publishing.publications)
+    }
+}

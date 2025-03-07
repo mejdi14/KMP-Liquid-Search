@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 data class LiquidSearchConfig(
-    val height: Dp = 60.dp,
+    val height: Dp = 30.dp,
     val width: Dp? = null,
     val shape: Shape = RoundedCornerShape(10.dp),
     val backgroundColor: Color = Color(0xFF6147ff),
