@@ -1,5 +1,6 @@
 package org.mejdi14.project
 
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -54,9 +55,7 @@ fun LiquidSearch(
         }
     }
 
-    val infiniteTransition = rememberInfiniteTransition()
     val blinkingAlpha by if (isChecked.value) {
-        // Only animate when isChecked is true.
         rememberInfiniteTransition().animateFloat(
             initialValue = 1f,
             targetValue = 1f,
@@ -68,28 +67,26 @@ fun LiquidSearch(
                     0f at 400
                     1f at 500
                 },
-                // Wait 100ms before starting the first cycle
                 initialStartOffset = StartOffset(300),
-                repeatMode = androidx.compose.animation.core.RepeatMode.Restart
+                repeatMode = RepeatMode.Restart
             )
         )
     } else {
-        // If not checked, don't animate. Always return 1f.
-        remember { androidx.compose.runtime.mutableStateOf(1f) }
+        remember { mutableStateOf(1f) }
     }
 
     val isTyping = (currentTime.value - lastInputTime.value) < 500
     val cursorAlpha = if (isTyping) 1f else blinkingAlpha
 
     Box(
-        Modifier
+        modifier
             .height(liquidSearchConfig.height)
             .then(
                 liquidSearchConfig.width?.let {
                     Modifier.width(it)
                 } ?: Modifier.fillMaxWidth()
             )
-            .background(color = Color(0xFF6147ff))
+            .background(color = Color(0xFF6147ff), shape = liquidSearchConfig.shape)
             .padding(liquidSearchConfig.padding)
     ) {
         LiquidSearchTextField(
@@ -106,8 +103,10 @@ fun LiquidSearch(
                 .size(liquidSearchConfig.height)
                 .align(Alignment.CenterStart)
                 .graphicsLayer {
-                    translationX = cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
-                        LayoutDirection.Ltr).value + (canvasLineSize.value)
+                    translationX =
+                        cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
+                            LayoutDirection.Ltr
+                        ).value + (canvasLineSize.value)
                     alpha = if (isChecked.value) cursorAlpha else 1f
                 },
             isChecked = isChecked.value,

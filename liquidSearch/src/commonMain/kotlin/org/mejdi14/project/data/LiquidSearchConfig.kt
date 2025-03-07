@@ -12,5 +12,6 @@ data class LiquidSearchConfig(
     val width: Dp? = null,
     val shape: Shape = RoundedCornerShape(10.dp),
     val backgroundColor: Color = Color(0xFF6147ff),
-    val padding: PaddingValues = PaddingValues(20.dp)
+    val padding: PaddingValues = PaddingValues(20.dp),
+    val textFieldConfig: TextFieldConfig = TextFieldConfig()
 )
