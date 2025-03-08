@@ -1,5 +1,6 @@
 package org.mejdi14.project
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
@@ -7,6 +8,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -27,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -34,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import org.mejdi14.project.data.LiquidSearchConfig
+import org.mejdi14.project.data.controller.LiquidSearchController
+import org.mejdi14.project.data.controller.rememberLiquidSearchController
+import org.mejdi14.project.ui.AnimatedCancelIcon
 
 @Composable
 fun LiquidSearch(
@@ -43,14 +51,17 @@ fun LiquidSearch(
     onColor: Color = Color(0xFF6147ff),
     offColor: Color = Color(0xFF6147ff),
     iconElevation: Dp = 4.dp,
-    onCheckedChange: (Boolean) -> Unit
+    liquidSearchController: LiquidSearchController = rememberLiquidSearchController()
 ) {
 
     var textFieldValue = remember { mutableStateOf(TextFieldValue("")) }
     var cursorOffset = remember { mutableStateOf(0) }
+    var cancelIconIsVisible = remember { mutableStateOf(false) }
     var lastInputTime = remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var currentTime = remember { mutableStateOf(Clock.System.now().toEpochMilliseconds()) }
     var canvasLineSize = remember { mutableStateOf(0f) }
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     LaunchedEffect(Unit) {
         while (true) {
             currentTime.value = Clock.System.now().toEpochMilliseconds()
@@ -101,7 +112,8 @@ fun LiquidSearch(
             lastInputTime,
             liquidSearchConfig,
             isChecked,
-            cursorOffset
+            cursorOffset,
+            cancelIconIsVisible
         )
 
         Row(Modifier.fillMaxSize()) {
@@ -123,15 +135,36 @@ fun LiquidSearch(
                     offColor = offColor,
                     switchElevation = iconElevation,
                     canvasLineSize,
-                    onCheckedChange = { onCheckedChange(it) }
+                    onCheckedChange = {
+                        liquidSearchConfig.liquidSearchActionListener.onStateChange(
+                            it
+                        )
+                    }
                 )
             }
         }
-        AnimatedCancelIcon(
-            Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
-                .align(Alignment.CenterEnd),
-            canvasLineSize
-        )
+        AnimatedVisibility(
+            cancelIconIsVisible.value,
+            modifier = Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+                .align(Alignment.CenterEnd)
+        ) {
+            AnimatedCancelIcon(
+                Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        textFieldValue.value = TextFieldValue("")
+                        //delay(200)
+                        isChecked.value = false
+                        cancelIconIsVisible.value = false
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    },
+                canvasLineSize
+            )
+        }
     }
 }
 

@@ -3,7 +3,6 @@ package org.mejdi14.project
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -25,7 +24,8 @@ internal fun BoxScope.LiquidSearchTextField(
     lastInputTime: MutableState<Long>,
     liquidSearchConfig: LiquidSearchConfig,
     isChecked: MutableState<Boolean>,
-    cursorOffset: MutableState<Int>
+    cursorOffset: MutableState<Int>,
+    cancelIconIsVisible: MutableState<Boolean>
 ){
     BasicTextField(
         value = textFieldValue.value,
@@ -37,6 +37,7 @@ internal fun BoxScope.LiquidSearchTextField(
         })).sp, color = Color.White),
         onValueChange = { newText ->
             textFieldValue.value = newText
+            cancelIconIsVisible.value = newText.text.isNotEmpty()
             lastInputTime.value = Clock.System.now().toEpochMilliseconds()
         },
         modifier = Modifier

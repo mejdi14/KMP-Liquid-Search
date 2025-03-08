@@ -6,9 +6,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.mejdi14.project.data.controller.LiquidSearchController
+import org.mejdi14.project.data.controller.rememberLiquidSearchController
+import org.mejdi14.project.data.listener.LiquidSearchActionListener
+import org.mejdi14.project.data.listener.defaultLiquidSearchActionListener
 
 data class LiquidSearchConfig(
-    val height: Dp = 80.dp,
+    val height: Dp = 100.dp,
     val width: Dp? = null,
     val shape: Shape = RoundedCornerShape(10.dp),
     val backgroundColor: Color = Color(0xFF6147ff),
@@ -16,4 +20,6 @@ data class LiquidSearchConfig(
     val textFieldConfig: TextFieldConfig = TextFieldConfig(),
     val liquidSearchIconPosition: LiquidSearchIconPosition = LiquidSearchIconPosition.LEFT,
     val cancelIconSizeRatio: Int = 5,
+    val liquidSearchActionListener: LiquidSearchActionListener = defaultLiquidSearchActionListener,
+
 )
