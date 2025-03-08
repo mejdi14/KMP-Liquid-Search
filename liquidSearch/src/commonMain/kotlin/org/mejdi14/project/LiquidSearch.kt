@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,9 +27,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -38,6 +43,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import org.mejdi14.project.data.LiquidSearchConfig
 import org.mejdi14.project.data.controller.LiquidSearchController
@@ -62,6 +68,7 @@ fun LiquidSearch(
     var canvasLineSize = remember { mutableStateOf(0f) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         while (true) {
             currentTime.value = Clock.System.now().toEpochMilliseconds()
@@ -70,13 +77,15 @@ fun LiquidSearch(
     }
 
     (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
-        resetLiquidSearch(
-            textFieldValue,
-            isChecked,
-            cancelIconIsVisible,
-            focusManager,
-            keyboardController
-        )
+        coroutineScope.launch {
+            resetLiquidSearch(
+                textFieldValue,
+                isChecked,
+                cancelIconIsVisible,
+                focusManager,
+                keyboardController
+            )
+        }
     }
 
     val blinkingAlpha by if (isChecked.value) {
@@ -103,16 +112,24 @@ fun LiquidSearch(
     val cursorAlpha = if (isTyping) 1f else blinkingAlpha
 
     Box(
-        modifier
+        modifier = modifier
+            .offset(x = 2.dp, y = 2.dp)  // Add a small offset
             .height(liquidSearchConfig.height)
             .then(
                 liquidSearchConfig.width?.let {
                     Modifier.width(it)
                 } ?: Modifier.fillMaxWidth()
             )
+
             .background(
                 color = liquidSearchConfig.backgroundColor,
                 shape = liquidSearchConfig.shape
+            )
+            .shadow(
+                elevation = 8.dp,
+                shape = liquidSearchConfig.shape,
+                spotColor = liquidSearchConfig.backgroundColor.copy(alpha = 0.7f),
+                ambientColor = liquidSearchConfig.backgroundColor.copy(alpha = 0.9f)
             )
             .padding(liquidSearchConfig.padding)
     ) {
@@ -133,9 +150,9 @@ fun LiquidSearch(
                         .size(liquidSearchConfig.height)
                         .align(Alignment.CenterStart)
                         .graphicsLayer {
-                            translationX =
+                            translationX = liquidSearchConfig.startSpacing +
                                 cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
-                                    LayoutDirection.Ltr
+                                    LayoutDirection.Rtl
                                 )
                                     .toPx() + (canvasLineSize.value / 2) - (liquidSearchConfig.height.toPx() / 2)
                             alpha = if (isChecked.value) cursorAlpha else 1f
@@ -164,13 +181,15 @@ fun LiquidSearch(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) {
-                        resetLiquidSearch(
-                            textFieldValue,
-                            isChecked,
-                            cancelIconIsVisible,
-                            focusManager,
-                            keyboardController
-                        )
+                        coroutineScope.launch {
+                            resetLiquidSearch(
+                                textFieldValue,
+                                isChecked,
+                                cancelIconIsVisible,
+                                focusManager,
+                                keyboardController
+                            )
+                        }
                     },
                 canvasLineSize,
                 liquidSearchConfig
@@ -179,7 +198,7 @@ fun LiquidSearch(
     }
 }
 
-private fun resetLiquidSearch(
+private suspend fun resetLiquidSearch(
     textFieldValue: MutableState<TextFieldValue>,
     isChecked: MutableState<Boolean>,
     cancelIconIsVisible: MutableState<Boolean>,
@@ -187,7 +206,7 @@ private fun resetLiquidSearch(
     keyboardController: SoftwareKeyboardController?
 ) {
     textFieldValue.value = TextFieldValue("")
-    //delay(200)
+    delay(600)
     isChecked.value = false
     cancelIconIsVisible.value = false
     focusManager.clearFocus()

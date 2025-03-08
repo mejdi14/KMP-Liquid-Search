@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
@@ -48,6 +49,9 @@ internal fun BoxScope.LiquidSearchTextField(
             .align(Alignment.CenterStart)
             .onFocusChanged { focusState ->
                 isChecked.value = focusState.isFocused
+            }
+            .graphicsLayer {
+                translationX = liquidSearchConfig.startSpacing
             },
         onTextLayout = { result ->
             val currentIndex = textFieldValue.value.selection.start
