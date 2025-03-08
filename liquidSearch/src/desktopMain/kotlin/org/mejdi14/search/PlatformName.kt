@@ -1,3 +1,3 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 actual val isDesktop: PlatformName = PlatformName.DESKTOP

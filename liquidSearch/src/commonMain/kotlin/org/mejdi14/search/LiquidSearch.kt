@@ -1,4 +1,4 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.RepeatMode
@@ -8,8 +8,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
@@ -36,11 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -52,11 +47,11 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
-import org.mejdi14.project.data.LiquidSearchConfig
-import org.mejdi14.project.data.controller.LiquidSearchController
-import org.mejdi14.project.data.controller.LiquidSearchControllerImpl
-import org.mejdi14.project.data.controller.rememberLiquidSearchController
-import org.mejdi14.project.ui.AnimatedCancelIcon
+import org.mejdi14.search.data.LiquidSearchConfig
+import org.mejdi14.search.data.controller.LiquidSearchController
+import org.mejdi14.search.data.controller.LiquidSearchControllerImpl
+import org.mejdi14.search.data.controller.rememberLiquidSearchController
+import org.mejdi14.search.ui.AnimatedCancelIcon
 
 @Composable
 fun LiquidSearch(

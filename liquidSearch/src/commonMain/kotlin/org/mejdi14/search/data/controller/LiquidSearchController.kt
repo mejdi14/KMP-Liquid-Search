@@ -1,4 +1,4 @@
-package org.mejdi14.project.data.controller
+package org.mejdi14.search.data.controller
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

@@ -1,4 +1,4 @@
-package org.mejdi14.project.helpers
+package org.mejdi14.search.helpers
 
 const val SWITCHER_ANIMATION_DURATION = 800L
 const val COLOR_ANIMATION_DURATION = 300L

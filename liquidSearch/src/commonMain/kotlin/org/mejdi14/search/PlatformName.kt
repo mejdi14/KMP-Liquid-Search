@@ -1,4 +1,4 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 expect val isDesktop: PlatformName
 

@@ -1,4 +1,4 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 class WasmPlatform: Platform {
     override val name: String = "Web with Kotlin/Wasm"

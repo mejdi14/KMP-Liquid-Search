@@ -1,4 +1,4 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -18,8 +18,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.Clock
-import org.mejdi14.project.data.LiquidSearchConfig
-import org.mejdi14.project.data.controller.LiquidSearchController
+import org.mejdi14.search.data.LiquidSearchConfig
 
 @Composable
 internal fun BoxScope.LiquidSearchTextField(

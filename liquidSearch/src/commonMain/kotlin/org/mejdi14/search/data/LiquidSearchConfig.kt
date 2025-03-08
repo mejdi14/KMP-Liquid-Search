@@ -1,4 +1,4 @@
-package org.mejdi14.project.data
+package org.mejdi14.search.data
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -6,11 +6,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.vectorResource
-import org.mejdi14.project.data.controller.LiquidSearchController
-import org.mejdi14.project.data.controller.rememberLiquidSearchController
-import org.mejdi14.project.data.listener.LiquidSearchActionListener
-import org.mejdi14.project.data.listener.defaultLiquidSearchActionListener
+import org.mejdi14.search.data.listener.LiquidSearchActionListener
+import org.mejdi14.search.data.listener.defaultLiquidSearchActionListener
 
 data class LiquidSearchConfig(
     val height: Dp = 100.dp,

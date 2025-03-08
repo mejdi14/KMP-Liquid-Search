@@ -1,4 +1,4 @@
-package org.mejdi14.project.ui
+package org.mejdi14.search.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,7 +7,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
-import org.mejdi14.project.data.LiquidSearchConfig
+import org.mejdi14.search.data.LiquidSearchConfig
 import kotlin.math.min
 
 @Composable

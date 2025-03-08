@@ -1,4 +1,4 @@
-package org.mejdi14.project.data
+package org.mejdi14.search.data
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

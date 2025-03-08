@@ -82,7 +82,7 @@ kotlin {
 }
 
 android {
-    namespace = "org.mejdi14.project"
+    namespace = "org.mejdi14.search"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
@@ -115,11 +115,11 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "org.mejdi14.project.MainKt"
+        mainClass = "org.mejdi14.search.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.mejdi14.project"
+            packageName = "org.mejdi14.search"
             packageVersion = "1.0.0"
         }
     }

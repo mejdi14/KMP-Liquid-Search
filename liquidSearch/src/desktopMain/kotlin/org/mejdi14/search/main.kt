@@ -1,4 +1,4 @@
-package org.mejdi14.project
+package org.mejdi14.search
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
