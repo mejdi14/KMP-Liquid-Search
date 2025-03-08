@@ -52,6 +52,7 @@ internal fun BoxScope.LiquidSearchTextField(
             .padding(end = (liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio) + (canvasLineSize.value.dp * 2.5f))
             .onFocusChanged { focusState ->
                 isChecked.value = focusState.isFocused
+                textFieldValue.value = TextFieldValue("")
             }
             .graphicsLayer {
                 translationX = liquidSearchConfig.startSpacing

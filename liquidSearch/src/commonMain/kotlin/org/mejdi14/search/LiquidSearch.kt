@@ -44,6 +44,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -78,6 +80,7 @@ fun LiquidSearch(
         }
     }
 
+        CoroutineScope(Dispatchers.Main).launch {
     (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
             resetLiquidSearch(
                 textFieldValue,
@@ -86,6 +89,7 @@ fun LiquidSearch(
                 focusManager,
                 keyboardController
             )
+            }
     }
 
     val blinkingAlpha by if (isChecked.value) {
@@ -113,7 +117,7 @@ fun LiquidSearch(
 
     Box(
         modifier = modifier
-            .offset(x = 2.dp, y = 2.dp)  // Add a small offset
+            .offset(x = 2.dp, y = 2.dp)
             .height(liquidSearchConfig.height)
             .then(
                 liquidSearchConfig.width?.let {
@@ -218,11 +222,11 @@ private  fun resetLiquidSearch(
     focusManager: FocusManager,
     keyboardController: SoftwareKeyboardController?
 ) {
-    textFieldValue.value = TextFieldValue("")
+    focusManager.clearFocus()
+    keyboardController?.hide()
     cancelIconIsVisible.value = false
     //delay(600)
     isChecked.value = false
-    focusManager.clearFocus()
-    keyboardController?.hide()
+    textFieldValue.value = TextFieldValue("")
 }
 

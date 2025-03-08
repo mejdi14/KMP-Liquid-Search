@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.mejdi14.search.LiquidSearch
@@ -24,7 +25,6 @@ fun App() {
     MaterialTheme {
         var isChecked = remember { mutableStateOf(false) }
         val searchBarController = rememberLiquidSearchController()
-
         Box(Modifier.fillMaxSize().background(color = Color(0xFFe1dbff))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
@@ -41,9 +41,6 @@ fun App() {
                     height = if (isMobileDevice()) 80.dp else 100.dp,
                 )
             )
-
         }
-
-
     }
 }
