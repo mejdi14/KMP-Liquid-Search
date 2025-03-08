@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import org.mejdi14.project.data.LiquidSearchConfig
 import org.mejdi14.project.helpers.ANIMATION_SPEED_EXIT
 import org.mejdi14.project.helpers.BOUNCE_ANIM_AMPLITUDE_IN
 import org.mejdi14.project.helpers.BOUNCE_ANIM_AMPLITUDE_OUT
@@ -54,6 +55,7 @@ internal fun AnimatedSearchIcon(
     isActive: Boolean,
     switchElevation: Dp = 4.dp,
     canvasLineSize: MutableState<Float>,
+    liquidSearchConfig: LiquidSearchConfig,
     onCheckedChange: (Boolean) -> Unit
 ) {
     val density = LocalDensity.current
@@ -81,7 +83,7 @@ internal fun AnimatedSearchIcon(
         transitionSpec = { tween(durationMillis = COLOR_ANIMATION_DURATION.toInt()) },
         label = "ColorAnimation"
     ) { state ->
-        if (state) onColor else offColor
+        if (state) liquidSearchConfig.iconActiveColor else liquidSearchConfig.iconInactiveColor
     }
 
     Canvas(
@@ -151,7 +153,7 @@ internal fun AnimatedSearchIcon(
         drawLine(
             color = Color.White,
             start = Offset(
-                iconRect.left + (lineSize * LINE_START_X_FACTOR) + (((iconRect.size.width) / 2) * iconProgress),
+                iconRect.left + (lineSize * LINE_START_X_FACTOR) + (((iconRect.size.width) / 1.8f) * iconProgress),
                 iconRect.bottom - (lineSize * LINE_START_X_FACTOR) - ((lineSize * LINE_START_X_FACTOR) * iconProgress)
             ),
             end = Offset(

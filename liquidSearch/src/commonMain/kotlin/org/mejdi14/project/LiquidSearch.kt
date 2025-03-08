@@ -130,6 +130,7 @@ fun LiquidSearch(
                     isActive = isChecked.value,
                     switchElevation = iconElevation,
                     canvasLineSize,
+                    liquidSearchConfig,
                     onCheckedChange = {
                         liquidSearchConfig.liquidSearchActionListener.onStateChange(
                             it

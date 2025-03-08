@@ -20,6 +20,8 @@ data class LiquidSearchConfig(
     val textFieldConfig: TextFieldConfig = TextFieldConfig(),
     val liquidSearchIconPosition: LiquidSearchIconPosition = LiquidSearchIconPosition.LEFT,
     val cancelIconSizeRatio: Int = 5,
+    val iconActiveColor: Color = Color.Transparent,
+    val iconInactiveColor: Color = backgroundColor,
     val liquidSearchActionListener: LiquidSearchActionListener = defaultLiquidSearchActionListener,
 
 )
