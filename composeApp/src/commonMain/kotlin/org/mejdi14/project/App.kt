@@ -14,8 +14,7 @@ fun App() {
         var isChecked = remember { mutableStateOf(false) }
         Box(Modifier.fillMaxSize()){
 
-        LiquidSearch(isChecked = isChecked){
-        }
+        LiquidSearch(isChecked = isChecked)
 
         }
 

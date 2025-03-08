@@ -1,6 +1,5 @@
 package org.mejdi14.project.data.listener
 
-import org.example.dropdown.data.listener.DropdownActionListener
 
 
 abstract class LiquidSearchActionListener {

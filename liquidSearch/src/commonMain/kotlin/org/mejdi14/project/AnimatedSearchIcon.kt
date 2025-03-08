@@ -6,7 +6,6 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,9 +51,7 @@ import kotlin.math.min
 @Composable
 internal fun AnimatedSearchIcon(
     modifier: Modifier,
-    isChecked: Boolean,
-    onColor: Color,
-    offColor: Color,
+    isActive: Boolean,
     switchElevation: Dp = 4.dp,
     canvasLineSize: MutableState<Float>,
     onCheckedChange: (Boolean) -> Unit
@@ -62,7 +59,7 @@ internal fun AnimatedSearchIcon(
     val density = LocalDensity.current
     val elevationPx = with(density) { switchElevation.toPx() }
 
-    val transition = updateTransition(targetState = isChecked, label = "Search Icon Animation")
+    val transition = updateTransition(targetState = isActive, label = "Search Icon Animation")
 
     val iconProgress by transition.animateFloat(
         transitionSpec = {
@@ -91,12 +88,12 @@ internal fun AnimatedSearchIcon(
         modifier = modifier
             .graphicsLayer {
                 translationY =
-                    -(canvasLineSize.value + (size.height * (if (isChecked) TRANSLATION_Y_CHECKED_FACTOR else 0f)))
+                    -(canvasLineSize.value + (size.height * (if (isActive) TRANSLATION_Y_CHECKED_FACTOR else 0f)))
             }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
-            ) { onCheckedChange(!isChecked) }
+            ) { onCheckedChange(!isActive) }
             .fillMaxSize()
 
     ) {
@@ -137,13 +134,13 @@ internal fun AnimatedSearchIcon(
             )
         )
 
-        val lineAnimProgress = if (isChecked) {
+        val lineAnimProgress = if (isActive) {
             1f - iconProgress
         } else {
             iconProgress
         }
 
-        val lineSqueezeFactor = if (isChecked) {
+        val lineSqueezeFactor = if (isActive) {
             val bouncePart = exp(-lineAnimProgress / BOUNCE_ANIM_AMPLITUDE_OUT) *
                     cos(ANIMATION_SPEED_EXIT * lineAnimProgress)
             1f - (bouncePart * LINE_SQUEEZE_BOUNCE_FACTOR)

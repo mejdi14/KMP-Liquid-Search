@@ -28,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -48,8 +47,6 @@ fun LiquidSearch(
     modifier: Modifier = Modifier,
     liquidSearchConfig: LiquidSearchConfig = LiquidSearchConfig(),
     isChecked: MutableState<Boolean>,
-    onColor: Color = Color(0xFF6147ff),
-    offColor: Color = Color(0xFF6147ff),
     iconElevation: Dp = 4.dp,
     liquidSearchController: LiquidSearchController = rememberLiquidSearchController()
 ) {
@@ -130,9 +127,7 @@ fun LiquidSearch(
                                     .toPx() + (canvasLineSize.value / 2) - (liquidSearchConfig.height.toPx() / 2)
                             alpha = if (isChecked.value) cursorAlpha else 1f
                         },
-                    isChecked = isChecked.value,
-                    onColor = onColor,
-                    offColor = offColor,
+                    isActive = isChecked.value,
                     switchElevation = iconElevation,
                     canvasLineSize,
                     onCheckedChange = {
