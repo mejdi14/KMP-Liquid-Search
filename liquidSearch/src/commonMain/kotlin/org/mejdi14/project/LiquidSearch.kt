@@ -28,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -39,6 +41,7 @@ import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import org.mejdi14.project.data.LiquidSearchConfig
 import org.mejdi14.project.data.controller.LiquidSearchController
+import org.mejdi14.project.data.controller.LiquidSearchControllerImpl
 import org.mejdi14.project.data.controller.rememberLiquidSearchController
 import org.mejdi14.project.ui.AnimatedCancelIcon
 
@@ -64,6 +67,16 @@ fun LiquidSearch(
             currentTime.value = Clock.System.now().toEpochMilliseconds()
             delay(50)
         }
+    }
+
+    (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
+        resetLiquidSearch(
+            textFieldValue,
+            isChecked,
+            cancelIconIsVisible,
+            focusManager,
+            keyboardController
+        )
     }
 
     val blinkingAlpha by if (isChecked.value) {
@@ -110,7 +123,7 @@ fun LiquidSearch(
             liquidSearchConfig,
             isChecked,
             cursorOffset,
-            cancelIconIsVisible
+            cancelIconIsVisible,
         )
 
         Row(Modifier.fillMaxSize()) {
@@ -151,16 +164,32 @@ fun LiquidSearch(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ) {
-                        textFieldValue.value = TextFieldValue("")
-                        //delay(200)
-                        isChecked.value = false
-                        cancelIconIsVisible.value = false
-                        focusManager.clearFocus()
-                        keyboardController?.hide()
+                        resetLiquidSearch(
+                            textFieldValue,
+                            isChecked,
+                            cancelIconIsVisible,
+                            focusManager,
+                            keyboardController
+                        )
                     },
                 canvasLineSize
             )
         }
     }
+}
+
+private fun resetLiquidSearch(
+    textFieldValue: MutableState<TextFieldValue>,
+    isChecked: MutableState<Boolean>,
+    cancelIconIsVisible: MutableState<Boolean>,
+    focusManager: FocusManager,
+    keyboardController: SoftwareKeyboardController?
+) {
+    textFieldValue.value = TextFieldValue("")
+    //delay(200)
+    isChecked.value = false
+    cancelIconIsVisible.value = false
+    focusManager.clearFocus()
+    keyboardController?.hide()
 }
 

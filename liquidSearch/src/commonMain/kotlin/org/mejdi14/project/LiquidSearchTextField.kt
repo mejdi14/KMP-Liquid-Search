@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.Clock
 import org.mejdi14.project.data.LiquidSearchConfig
+import org.mejdi14.project.data.controller.LiquidSearchController
 
 @Composable
 internal fun BoxScope.LiquidSearchTextField(
@@ -25,8 +26,10 @@ internal fun BoxScope.LiquidSearchTextField(
     liquidSearchConfig: LiquidSearchConfig,
     isChecked: MutableState<Boolean>,
     cursorOffset: MutableState<Int>,
-    cancelIconIsVisible: MutableState<Boolean>
+    cancelIconIsVisible: MutableState<Boolean>,
 ){
+
+
     BasicTextField(
         value = textFieldValue.value,
         cursorBrush = SolidColor(Color.Transparent),

@@ -7,11 +7,11 @@ interface LiquidSearchController {
     fun clearFocus()
 }
 
-private class LiquidSearchControllerImpl : LiquidSearchController {
-    var onClearFocus: (() -> Unit)? = null
+internal class LiquidSearchControllerImpl : LiquidSearchController {
+    var onResetSearch: (() -> Unit)? = null
 
     override fun clearFocus() {
-        onClearFocus?.invoke()
+        onResetSearch?.invoke()
     }
 }
 
