@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,10 +34,12 @@ fun App() {
             }) {
 
             LiquidSearch(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.TopCenter).padding(top = 100.dp),
                 isChecked = isChecked,
-                liquidSearchConfig = LiquidSearchConfig(width = if (isMobileDevice()) 300.dp else 600.dp,
-                    height = if (isMobileDevice()) 80.dp else 100.dp,)
+                liquidSearchConfig = LiquidSearchConfig(
+                    width = if (isMobileDevice()) 300.dp else 600.dp,
+                    height = if (isMobileDevice()) 80.dp else 100.dp,
+                )
             )
 
         }

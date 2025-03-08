@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("org.jetbrains.dokka")
+    id("io.gitlab.arturbosch.detekt")
     id("com.vanniktech.maven.publish") version "0.30.0"
     signing
 }
@@ -130,4 +132,14 @@ if ((project.findProperty("RELEASE_SIGNING_ENABLED")?.toString() ?: "false").toB
         useGpgCmd()
         sign(publishing.publications)
     }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(buildDir.resolve("dokka"))
+}
+
+detekt {
+    toolVersion = "1.22.0"
+    config = files("$rootDir/detekt-config.yml")
+    buildUponDefaultConfig = true
 }

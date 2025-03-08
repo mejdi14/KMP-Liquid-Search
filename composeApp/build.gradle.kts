@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    id("org.jetbrains.dokka")
+    id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.compose.hot-reload") version "1.0.0-alpha01"
 }
 
