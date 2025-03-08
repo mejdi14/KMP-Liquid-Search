@@ -6,12 +6,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import org.mejdi14.project.data.LiquidSearchConfig
 import kotlin.math.min
 
 @Composable
-fun AnimatedCancelIcon(modifier: Modifier, canvasLineSize: MutableState<Float>) {
+fun AnimatedCancelIcon(
+    modifier: Modifier,
+    canvasLineSize: MutableState<Float>,
+    liquidSearchConfig: LiquidSearchConfig
+) {
     Canvas(
         modifier = modifier
             .fillMaxSize()
@@ -19,7 +23,7 @@ fun AnimatedCancelIcon(modifier: Modifier, canvasLineSize: MutableState<Float>) 
         val sizeMin = min(size.width, size.height)
 
         drawLine(
-            color = Color.White,
+            color = liquidSearchConfig.cancelIconColor,
             start = Offset(0f, 0f),
             end = Offset(sizeMin, sizeMin),
             strokeWidth = canvasLineSize.value,
@@ -28,7 +32,7 @@ fun AnimatedCancelIcon(modifier: Modifier, canvasLineSize: MutableState<Float>) 
 
         // Draw the second line (top-right to bottom-left)
         drawLine(
-            color = Color.White,
+            color = liquidSearchConfig.cancelIconColor,
             start = Offset(sizeMin, 0f),
             end = Offset(0f, sizeMin),
             strokeWidth = canvasLineSize.value,

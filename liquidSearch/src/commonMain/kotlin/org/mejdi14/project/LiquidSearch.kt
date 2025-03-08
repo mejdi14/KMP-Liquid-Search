@@ -172,7 +172,8 @@ fun LiquidSearch(
                             keyboardController
                         )
                     },
-                canvasLineSize
+                canvasLineSize,
+                liquidSearchConfig
             )
         }
     }

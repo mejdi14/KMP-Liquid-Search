@@ -127,7 +127,7 @@ internal fun AnimatedSearchIcon(
         canvasLineSize.value = lineSize
 
         drawRoundRect(
-            color = Color.White,
+            color = liquidSearchConfig.searchIconColor,
             topLeft = Offset(iconRect.left, iconRect.top),
             size = Size(iconRect.width, iconRect.height),
             cornerRadius = CornerRadius(
@@ -151,7 +151,7 @@ internal fun AnimatedSearchIcon(
         }
 
         drawLine(
-            color = Color.White,
+            color = liquidSearchConfig.searchIconColor,
             start = Offset(
                 iconRect.left + (lineSize * LINE_START_X_FACTOR) + (((iconRect.size.width) / 1.8f) * iconProgress),
                 iconRect.bottom - (lineSize * LINE_START_X_FACTOR) - ((lineSize * LINE_START_X_FACTOR) * iconProgress)
