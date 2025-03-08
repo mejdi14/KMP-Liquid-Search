@@ -7,3 +7,5 @@ enum class PlatformName{
     WEB,
     MOBILE
 }
+
+expect fun isMobileDevice(): Boolean

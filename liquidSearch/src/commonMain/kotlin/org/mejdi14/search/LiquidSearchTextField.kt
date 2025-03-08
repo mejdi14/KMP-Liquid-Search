@@ -31,13 +31,14 @@ internal fun BoxScope.LiquidSearchTextField(
     cancelIconIsVisible: MutableState<Boolean>,
 ){
 
-
     BasicTextField(
         value = textFieldValue.value,
         cursorBrush = SolidColor(Color.Transparent),
         textStyle = TextStyle(fontSize = (canvasLineSize.value * (when(isDesktop){
-            PlatformName.DESKTOP -> 4f
-            PlatformName.WEB -> 4f
+            PlatformName.DESKTOP  -> 4f
+            PlatformName.WEB  -> {
+                if (isMobileDevice()) 2f else 4f
+            }
             PlatformName.MOBILE -> 2f
         })).sp, color = Color.White),
         onValueChange = { newText ->

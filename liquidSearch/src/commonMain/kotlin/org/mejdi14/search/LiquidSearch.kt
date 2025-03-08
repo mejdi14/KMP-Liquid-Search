@@ -79,7 +79,6 @@ fun LiquidSearch(
     }
 
     (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
-        coroutineScope.launch {
             resetLiquidSearch(
                 textFieldValue,
                 isChecked,
@@ -87,7 +86,6 @@ fun LiquidSearch(
                 focusManager,
                 keyboardController
             )
-        }
     }
 
     val blinkingAlpha by if (isChecked.value) {
@@ -137,8 +135,10 @@ fun LiquidSearch(
     ) {
 
 
-        Row(Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             BoxWithConstraints(modifier = Modifier.fillMaxHeight().weight(1f)) {
                 LiquidSearchTextField(
                     textFieldValue,
@@ -181,8 +181,7 @@ fun LiquidSearch(
             }
             AnimatedVisibility(
                 cancelIconIsVisible.value,
-                modifier = Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
-                    ,
+                modifier = Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio),
                 enter = scaleIn(animationSpec = tween(durationMillis = 300)),
                 exit = scaleOut(animationSpec = tween(durationMillis = 300)),
 
@@ -194,7 +193,7 @@ fun LiquidSearch(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            coroutineScope.launch {
+                                liquidSearchConfig.liquidSearchActionListener.onCancelClicked()
                                 resetLiquidSearch(
                                     textFieldValue,
                                     isChecked,
@@ -202,7 +201,6 @@ fun LiquidSearch(
                                     focusManager,
                                     keyboardController
                                 )
-                            }
                         },
                     canvasLineSize,
                     liquidSearchConfig
@@ -213,7 +211,7 @@ fun LiquidSearch(
     }
 }
 
-private suspend fun resetLiquidSearch(
+private  fun resetLiquidSearch(
     textFieldValue: MutableState<TextFieldValue>,
     isChecked: MutableState<Boolean>,
     cancelIconIsVisible: MutableState<Boolean>,
@@ -222,7 +220,7 @@ private suspend fun resetLiquidSearch(
 ) {
     textFieldValue.value = TextFieldValue("")
     cancelIconIsVisible.value = false
-    delay(600)
+    //delay(600)
     isChecked.value = false
     focusManager.clearFocus()
     keyboardController?.hide()

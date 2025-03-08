@@ -11,7 +11,7 @@ abstract class LiquidSearchActionListener {
         // Default implementation: Do nothing
     }
 
-    open fun onLongPress() {
+    open fun onCancelClicked() {
         // Default implementation: Do nothing
     }
 
@@ -29,7 +29,7 @@ val defaultLiquidSearchActionListener = object : LiquidSearchActionListener() {
         // Default implementation: Do nothing
     }
 
-    override fun onLongPress() {
+    override fun onCancelClicked() {
         // Default implementation: Do nothing
     }
 
