@@ -7,10 +7,16 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -34,6 +40,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -133,28 +140,37 @@ fun LiquidSearch(
             )
             .padding(liquidSearchConfig.padding)
     ) {
-        LiquidSearchTextField(
-            textFieldValue,
-            canvasLineSize,
-            lastInputTime,
-            liquidSearchConfig,
-            isChecked,
-            cursorOffset,
-            cancelIconIsVisible,
-        )
 
-        Row(Modifier.fillMaxSize()) {
-            Box(modifier = Modifier.fillMaxHeight().weight(1f)) {
+
+        Row(Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically) {
+            BoxWithConstraints(modifier = Modifier.fillMaxHeight().weight(1f)) {
+                LiquidSearchTextField(
+                    textFieldValue,
+                    canvasLineSize,
+                    lastInputTime,
+                    liquidSearchConfig,
+                    isChecked,
+                    cursorOffset,
+                    cancelIconIsVisible,
+                )
                 AnimatedSearchIcon(
                     modifier = Modifier
                         .size(liquidSearchConfig.height)
                         .align(Alignment.CenterStart)
                         .graphicsLayer {
-                            translationX = liquidSearchConfig.startSpacing +
-                                cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
+                            val maxEdge =
+                                maxWidth.toPx() - (liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio).toPx() - canvasLineSize.value - liquidSearchConfig.padding.calculateStartPadding(
                                     LayoutDirection.Rtl
-                                )
-                                    .toPx() + (canvasLineSize.value / 2) - (liquidSearchConfig.height.toPx() / 2)
+                                ).toPx()
+                            val currentEdge = liquidSearchConfig.startSpacing +
+                                    cursorOffset.value.toFloat() + liquidSearchConfig.padding.calculateStartPadding(
+                                LayoutDirection.Rtl
+                            )
+                                .toPx() + (canvasLineSize.value / 2) - (liquidSearchConfig.height.toPx() / 2)
+
+
+                            translationX = if (currentEdge > maxEdge) maxEdge else currentEdge
                             alpha = if (isChecked.value) cursorAlpha else 1f
                         },
                     isActive = isChecked.value,
@@ -168,32 +184,36 @@ fun LiquidSearch(
                     }
                 )
             }
-        }
-        AnimatedVisibility(
-            cancelIconIsVisible.value,
-            modifier = Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
-                .align(Alignment.CenterEnd)
-        ) {
-            AnimatedCancelIcon(
-                Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+            AnimatedVisibility(
+                cancelIconIsVisible.value,
+                modifier = Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+                    ,
+                enter = scaleIn(animationSpec = tween(durationMillis = 300)),
+                exit = scaleOut(animationSpec = tween(durationMillis = 300)),
 
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        coroutineScope.launch {
-                            resetLiquidSearch(
-                                textFieldValue,
-                                isChecked,
-                                cancelIconIsVisible,
-                                focusManager,
-                                keyboardController
-                            )
-                        }
-                    },
-                canvasLineSize,
-                liquidSearchConfig
-            )
+                ) {
+                AnimatedCancelIcon(
+                    Modifier.size(liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio)
+
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            coroutineScope.launch {
+                                resetLiquidSearch(
+                                    textFieldValue,
+                                    isChecked,
+                                    cancelIconIsVisible,
+                                    focusManager,
+                                    keyboardController
+                                )
+                            }
+                        },
+                    canvasLineSize,
+                    liquidSearchConfig
+                )
+            }
+
         }
     }
 }
@@ -206,9 +226,9 @@ private suspend fun resetLiquidSearch(
     keyboardController: SoftwareKeyboardController?
 ) {
     textFieldValue.value = TextFieldValue("")
+    cancelIconIsVisible.value = false
     delay(600)
     isChecked.value = false
-    cancelIconIsVisible.value = false
     focusManager.clearFocus()
     keyboardController?.hide()
 }

@@ -3,6 +3,7 @@ package org.mejdi14.project
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.datetime.Clock
 import org.mejdi14.project.data.LiquidSearchConfig
@@ -47,6 +49,7 @@ internal fun BoxScope.LiquidSearchTextField(
         modifier = Modifier
             .fillMaxSize()
             .align(Alignment.CenterStart)
+            .padding(end = (liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio) + (canvasLineSize.value.dp * 2.5f))
             .onFocusChanged { focusState ->
                 isChecked.value = focusState.isFocused
             }
