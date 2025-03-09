@@ -12,9 +12,15 @@ plugins {
     alias(libs.plugins.composeCompiler)
     id("org.jetbrains.dokka")
     id("io.gitlab.arturbosch.detekt")
-    id("com.vanniktech.maven.publish") version "0.30.0"
+    id("com.vanniktech.maven.publish") version "0.31.0"
     signing
 }
+
+// Get version from environment or use default
+val versionName = System.getenv("VERSION_NAME") ?: "0.1.0-SNAPSHOT"
+// Define group for your artifacts
+group = "org.mejdi14.search"
+version = versionName
 
 kotlin {
     androidTarget {
@@ -22,8 +28,9 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
+        publishLibraryVariants("release")
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -34,10 +41,10 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm("desktop")
     jvmToolchain(17)
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         moduleName = "liquidSearch"
@@ -57,10 +64,10 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -89,7 +96,6 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-
     }
     packaging {
         resources {
@@ -127,6 +133,35 @@ compose.desktop {
     }
 }
 
+mavenPublishing {
+
+    pom {
+        name.set("CMP Bottom Bar - TinyGlide")
+        description.set("TinyGlide library for the CMP Bottom Bar multi-platform library.")
+        url.set("https://github.com/mejdi14/KMP-Liquid-Search")
+
+        licenses {
+            license {
+                name.set("Apache-2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                distribution.set("repo")
+            }
+        }
+        scm {
+            url.set("https://github.com/mejdi14/KMP-Liquid-Search")
+            connection.set("scm:git:git://github.com/mejdi14/KMP-Liquid-Search.git")
+            developerConnection.set("scm:git:ssh://git@github.com/mejdi14/KMP-Liquid-Search.git")
+        }
+        developers {
+            developer {
+                id.set("mejdi14")
+                name.set("mejdi hafiene")
+                url.set("https://github.com/mejdi14/")
+                email.set("mejdihafiane@gmail.com")
+            }
+        }
+    }
+}
 if ((project.findProperty("RELEASE_SIGNING_ENABLED")?.toString() ?: "false").toBoolean()) {
     signing {
         useGpgCmd()
