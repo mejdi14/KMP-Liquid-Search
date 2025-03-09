@@ -43,6 +43,42 @@ dependencies {
 ```
 
 ## :fire:How to use
+## :fire: How to Use
+
+```kotlin
+
+@Composable
+fun SampleLiquidSearch() {
+    val isActive = remember { mutableStateOf(false) }
+    val controller = rememberLiquidSearchController()
+
+    val searchConfig = LiquidSearchConfig(
+        height = 60.dp,
+        backgroundColor = Color(0xFF6147ff),
+        cancelIconColor = Color.White,
+        searchIconColor = Color.White,
+        iconActiveColor = Color.Transparent,
+        iconInactiveColor = Color(0xFF6147ff),
+        liquidSearchActionListener = object : LiquidSearchActionListener() {
+            override fun onTextChange(text: String) {
+                // Handle text changes
+            }
+            override fun onCancelClicked() {
+                // Handle cancel action
+            }
+            override fun onSearchIconClick() {
+                // Handle search icon click
+            }
+        }
+    )
+
+    LiquidSearch(
+        modifier = Modifier.fillMaxWidth(),
+        liquidSearchConfig = searchConfig,
+        isChecked = isActive,
+        liquidSearchController = controller
+    )
+}
 
 
 ## LiquidSearchConfig Properties
@@ -62,3 +98,42 @@ The `LiquidSearchConfig` class allows you to customize the appearance and behavi
 | `clearSearchWhenUnFocus`      | `Boolean`                         | `true`                             | Whether to clear search when it loses focus.                 |
 | `liquidSearchActionListener`  | `LiquidSearchActionListener`      | `defaultLiquidSearchActionListener` | Listener for search interactions. |
 
+## Use Custom Search Actions
+
+You can provide custom behavior when a search action happens by overriding the `LiquidSearchActionListener`.
+
+```kotlin
+val searchConfig = LiquidSearchConfig(
+    height = 60.dp,
+    backgroundColor = Color(0xFF6147ff),
+    liquidSearchActionListener = object : LiquidSearchActionListener() {
+        override fun onTextChange(text: String) {
+            // Handle text changes
+        }
+        override fun onCancelClicked() {
+            // Handle cancel click
+        }
+        override fun onSearchIconClick() {
+            // Handle search icon click
+        }
+    }
+)
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome.<br />
+Feel free to check [issues page] if you want to contribute.<br />
+
+## Author
+
+👤 **Mejdi Hafiane**
+
+- profile: [@MejdiHafiane](https://twitter.com/mejdi141)
+
+## Show your support
+
+Please ⭐️ this repository if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [Mejdi Hafiane](https://github.com/mejdi14).<br />
+This project is [MIT](https://github.com/mejdi14/readme-md-generator/blob/master/LICENSE) licensed.
