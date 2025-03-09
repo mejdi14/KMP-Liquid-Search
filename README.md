@@ -30,7 +30,7 @@
 
 ## :art: inspiration
 
-This library was inspired by Ramotion's original library which i migrated to Jetpack Compose
+This library was inspired by [Oleg Frolov](https://dribbble.com/shots/4605344-Search-icon-interaction) beautiful work.
 
 ## Installation
 
@@ -39,137 +39,102 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
     ...
-    implementation("io.github.mejdi14:KMP-Liquid-Slider:1.0.7")}
+    implementation("io.github.mejdi14:KMP-Liquid-Search:0.2.3")}
 ```
 
-## :fire: How to Use
+:fire: How to Use
+kotlinCopy// Create a mutable state to track the search state
+val isChecked = remember { mutableStateOf(false) }
 
-```kotlin
-LiquidSlider(
+LiquidSearch(
     modifier = Modifier.fillMaxWidth(),
-    size = LiquidSliderSize(width = 300.dp, height = 50.dp),
-    liquidSliderConfig = LiquidSliderConfig(
-        barColor = Color(0xFF6168E7),
-        bubbleColor = Color.White,
-        textColor = Color.Black,
-        startText = "0",
-        endText = "20",
-        textSize = 14f,
-        bubbleText = "Value",
-        initialPosition = 0.5f
+    liquidSearchConfig = LiquidSearchConfig(
+        height = 60.dp,
+        backgroundColor = Color(0xFF6147ff),
+        startSpacing = 50f,
+        searchIconColor = Color.White,
+        cancelIconColor = Color.White
     ),
-    onValueChange = { value ->
-        // Handle value change
-    },
-    onBeginTracking = {
-        // Called when the user starts interacting with the slider
-    },
-    onEndTracking = {
-        // Called when the user stops interacting with the slider
-    }
+    isChecked = isChecked,
+    // Optional: provide a custom controller
+    liquidSearchController = rememberLiquidSearchController()
 )
-```
 
----
+LiquidSearchConfig Properties
+The LiquidSearchConfig class allows you to customize the appearance and behavior of the liquid search. Below is a table of its properties:
+FieldTypeDefault ValueDescriptionheightDp100.dpThe height of the search bar.widthDp?nullThe width of the search bar (null for fillMaxWidth).shapeShapeRoundedCornerShape(25.dp)The shape of the search bar.backgroundColorColorColor(0xFF6147ff)The background color of the search bar.paddingPaddingValuesPaddingValues(20.dp)The padding inside the search bar.startSpacingFloat30fThe horizontal spacing at the start of the text field.textFieldConfigTextFieldConfigTextFieldConfig()Configuration for the text field.liquidSearchIconPositionLiquidSearchIconPositionLiquidSearchIconPosition.LEFTThe position of the search icon.cancelIconSizeRatioInt5The size ratio for the cancel icon.searchIconColorColorColor.WhiteThe color of the search icon.cancelIconColorColorColor.WhiteThe color of the cancel icon.iconActiveColorColorColor.TransparentThe color of the icon when active.iconInactiveColorColorbackgroundColorThe color of the icon when inactive.searchIconElevationDp4.dpThe elevation of the search icon.clearSearchWhenUnFocusBooleantrueWhether to clear search when the field loses focus.searchIconAnimationDurationLongSEARCH_ANIMATION_DURATIONThe duration of the search icon animation.liquidSearchActionListenerLiquidSearchActionListenerdefaultLiquidSearchActionListenerListener for search actions.
+TextFieldConfig Properties
+The TextFieldConfig class allows you to customize the text field used in the search bar:
+FieldTypeDefault ValueDescriptiontextStyleTextStyle?nullThe style of the text in the search field.singleLineBooleantrueWhether the text field is single line.decorationBox@Composable FunctionBasic Box with CenterStart alignmentDecoration box for the text field.
 
-## LiquidSliderConfig Properties
+Custom Action Listener
+You can create a custom action listener to respond to search events:
+kotlinCopyval customActionListener = object : LiquidSearchActionListener {
+    override fun onSearchIconClick() {
+        // Handle search icon click
+    }
+    
+    override fun onCancelClicked() {
+        // Handle cancel button click
+    }
+    
+    override fun onStateChange(isActive: Boolean) {
+        // Handle state changes
+    }
+}
 
-The `LiquidSliderConfig` class allows you to customize the appearance and behavior of the liquid slider. Below is a table of its properties:
+LiquidSearch(
+    liquidSearchConfig = LiquidSearchConfig(
+        liquidSearchActionListener = customActionListener
+    ),
+    isChecked = isChecked
+)
 
-| Field                        | Type       | Default Value                          | Description                                                                 |
-|------------------------------|------------|----------------------------------------|-----------------------------------------------------------------------------|
-| `barColor`                   | `Color`    | `Color(0xFF6168E7)`                   | The color of the slider bar.                                                |
-| `bubbleColor`                | `Color`    | `Color(0xFF6168E7)`                   | The color of the bubble (thumb).                                            |
-| `textColor`                  | `Color`    | `Color.Black`                         | The color of the text displayed on the slider.                              |
-| `barTextColor`               | `Color`    | `Color.White`                         | The color of the text inside the bar.                                       |
-| `startText`                  | `String`   | `SliderConstants.TEXT_START`          | The text displayed at the start of the slider.                              |
-| `endText`                    | `String`   | `SliderConstants.TEXT_END`            | The text displayed at the end of the slider.                                |
-| `textSize`                   | `Float`    | `SliderConstants.TEXT_SIZE`           | The size of the text displayed on the slider.                               |
-| `bubbleText`                 | `String?`  | `null`                                | Optional text displayed inside the bubble.                                  |
-| `progressCount`              | `Int`      | `SliderConstants.PROGRESS_COUNT`      | The number of progress steps (if applicable).                               |
-| `barCornerRadius`            | `Float`    | `SliderConstants.BAR_CORNER_RADIUS`   | The corner radius of the slider bar.                                        |
-| `barVerticalOffset`          | `Float`    | `SliderConstants.BAR_VERTICAL_OFFSET` | The vertical offset of the slider bar.                                      |
-| `barInnerHorizontalOffset`   | `Float`    | `SliderConstants.BAR_INNER_HORIZONTAL_OFFSET` | The horizontal offset inside the slider bar.                     |
-| `sliderWidth`                | `Float`    | `SliderConstants.SLIDER_WIDTH`        | The width of the slider.                                                    |
-| `sliderHeight`               | `Float`    | `SliderConstants.SLIDER_HEIGHT`       | The height of the slider.                                                   |
-| `topCircleDiameter`          | `Float`    | `SliderConstants.TOP_CIRCLE_DIAMETER` | The diameter of the top circle (bubble).                                    |
-| `bottomCircleDiameter`       | `Float`    | `SliderConstants.BOTTOM_CIRCLE_DIAMETER` | The diameter of the bottom circle.                                        |
-| `touchCircleDiameter`        | `Float`    | `SliderConstants.TOUCH_CIRCLE_DIAMETER` | The diameter of the touchable area.                                       |
-| `labelCircleDiameter`        | `Float`    | `SliderConstants.LABEL_CIRCLE_DIAMETER` | The diameter of the label circle.                                         |
-| `animationDuration`          | `Int`      | `SliderConstants.ANIMATION_DURATION`  | The duration of animations in milliseconds.                                 |
-| `topSpreadFactor`            | `Float`    | `SliderConstants.TOP_SPREAD_FACTOR`   | The spread factor for the top circle animation.                             |
-| `bottomStartSpreadFactor`    | `Float`    | `SliderConstants.BOTTOM_START_SPREAD_FACTOR` | The spread factor for the bottom circle at the start.               |
-| `bottomEndSpreadFactor`      | `Float`    | `SliderConstants.BOTTOM_END_SPREAD_FACTOR` | The spread factor for the bottom circle at the end.                 |
-| `liquidBalHandlerFactor`     | `Float`    | `SliderConstants.LIQUID_BALL_HANDLER_FACTOR` | The handler factor for the liquid ball animation.                  |
-| `liquidBalMaxDistance`       | `Float`    | `SliderConstants.LIQUID_BALL_MAX_DISTANCE` | The maximum distance for the liquid ball animation.                  |
-| `liquidBalRiseDistance`      | `Float`    | `SliderConstants.LIQUID_BALL_RISE_DISTANCE` | The rise distance for the liquid ball animation.                    |
-| `textOffset`                 | `Float`    | `SliderConstants.TEXT_OFFSET`         | The offset for the text displayed on the slider.                            |
-| `initialPosition`            | `Float`    | `SliderConstants.INITIAL_POSITION`    | The initial position of the slider (between 0 and 1).                       |
+Using a Controller
+The library provides a controller that allows you to programmatically control the search bar:
+kotlinCopyval controller = rememberLiquidSearchController()
 
----
+// In your composable
+LiquidSearch(
+    liquidSearchController = controller,
+    isChecked = isChecked
+)
 
-## Use images instead
-you can make the slider switch between different images just by providing a list of images
+// Later, to reset the search
+controller.resetSearch()
 
-<div style="display: flex; justify-content: center; align-items: center;">
-  <img 
-    src="https://raw.githubusercontent.com/mejdi14/KMP-Liquid-Slider/main/demo/demo2.gif"
-    height="500"
-    width="445"
-    style="margin-right: 20px;"
-  />
-</div>
+Cross-Platform Support
+KMP Liquid Search is designed to work seamlessly across different platforms:
 
-```kotlin
-               val myImages = listOf<ImageBitmap>(
-                    imageResource(Res.drawable.cold_sweat),
-                    imageResource(Res.drawable.disappointed_relieved),
-                    imageResource(Res.drawable.neutral_face),
-                    imageResource(Res.drawable.blush),
-                    imageResource(Res.drawable.heart_eyes),
+Mobile (Android/iOS)
+Desktop
+Web
 
-                    )
-                LiquidSlider(
-                    modifier = Modifier.align(Alignment.Center),
-                    liquidSliderConfig = LiquidSliderConfig(
-                        imageList = myImages,
-                    ),
-                    onValueChange = { newValue ->
-                    },
-                )
+The library automatically adapts to different platforms for optimal user experience.
+kotlinCopy// The library detects the platform and adjusts accordingly
+val fontSize = (canvasLineSize.value * (when (isDesktop) {
+    PlatformName.DESKTOP -> 4f
+    PlatformName.WEB -> {
+        if (isMobileDevice()) 2f else 4f
+    }
+    PlatformName.MOBILE -> 2f
+})).sp
 
-```
-
-If you have suggestions or feature requests, feel free to open an issue or contribute to the repository.
-
----
-
-## 🤝 Contributing
-
+🤝 Contributing
 Contributions, issues, and feature requests are welcome!<br />
-Feel free to check the [issues page](https://github.com/mejdi14/KMP-Liquid-Slider/issues) if you want to contribute.
+Feel free to check the issues page if you want to contribute.
 
----
+Author
+👤 Mejdi Hafiane
 
-## Author
+Profile: @MejdiHafiane
 
-👤 **Mejdi Hafiane**
 
-- Profile: [@MejdiHafiane](https://twitter.com/mejdi141)
-
----
-
-## Show Your Support
-
+Show Your Support
 Please ⭐️ this repository if this project helped you!
 
----
+📝 License
+Copyright © 2023 Mejdi Hafiane.<br />
+This project is MIT licensed.
 
-## 📝 License
-
-Copyright © 2023 [Mejdi Hafiane](https://github.com/mejdi14).<br />
-This project is [MIT](https://github.com/mejdi14/KMP-Liquid-Slider/blob/main/LICENSE) licensed.
-
----
-
-This README provides a clear and structured overview of your `KMP-Liquid-Slider` library, making it easy for users to understand and integrate into their projects.
+This README provides a clear and structured overview of the KMP-Liquid-Search library, making it easy for users to understand and integrate into their projects.
