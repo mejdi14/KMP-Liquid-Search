@@ -42,7 +42,9 @@ dependencies {
     implementation("io.github.mejdi14:KMP-Liquid-Search:0.2.3")}
 ```
 
-## :fire:How to use
+## 🚀:Try it out:
+Click [here](https://mejdi14.github.io/KMP-Liquid-Search/) to test the live version.
+
 ## :fire: How to Use
 
 ```kotlin
