@@ -37,8 +37,8 @@ import org.mejdi14.search.helpers.LINE_END_X_FACTOR
 import org.mejdi14.search.helpers.LINE_SQUEEZE_BOUNCE_FACTOR
 import org.mejdi14.search.helpers.LINE_START_X_FACTOR
 import org.mejdi14.search.helpers.RECT_CORNER_FACTOR
-import org.mejdi14.search.helpers.SWITCHER_ANIMATION_DURATION
-import org.mejdi14.search.helpers.SWITCH_RADIUS_LINE_FACTOR
+import org.mejdi14.search.helpers.SEARCH_ANIMATION_DURATION
+import org.mejdi14.search.helpers.SEARCH_RADIUS_LINE_FACTOR
 import org.mejdi14.search.helpers.TRANSLATION_Y_CHECKED_FACTOR
 import org.mejdi14.search.helpers.lerp
 import kotlin.math.cos
@@ -52,13 +52,12 @@ import kotlin.math.min
 internal fun AnimatedSearchIcon(
     modifier: Modifier,
     isActive: Boolean,
-    switchElevation: Dp = 4.dp,
     canvasLineSize: MutableState<Float>,
     liquidSearchConfig: LiquidSearchConfig,
     onCheckedChange: (Boolean) -> Unit
 ) {
     val density = LocalDensity.current
-    val elevationPx = with(density) { switchElevation.toPx() }
+    val elevationPx = with(density) { liquidSearchConfig.searchIconElevation.toPx() }
 
     val transition = updateTransition(targetState = isActive, label = "Search Icon Animation")
 
@@ -67,7 +66,7 @@ internal fun AnimatedSearchIcon(
             val amplitude = if (targetState) BOUNCE_ANIM_AMPLITUDE_OUT else BOUNCE_ANIM_AMPLITUDE_IN
             val frequency = if (targetState) ANIMATION_SPEED_EXIT else BOUNCE_ANIM_FREQUENCY_IN
             tween(
-                durationMillis = SWITCHER_ANIMATION_DURATION.toInt(),
+                durationMillis = SEARCH_ANIMATION_DURATION.toInt(),
                 easing = Easing { fraction ->
                     (-1 * exp(-fraction / amplitude) * cos(frequency * fraction) + 1).toFloat()
                 }
@@ -94,7 +93,10 @@ internal fun AnimatedSearchIcon(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null
-            ) { onCheckedChange(!isActive) }
+            ) {
+                onCheckedChange(!isActive)
+                liquidSearchConfig.liquidSearchActionListener.onSearchIconClick()
+            }
             .fillMaxSize()
 
     ) {
@@ -157,7 +159,7 @@ internal fun AnimatedSearchIcon(
             ),
             end = Offset(
                 iconRect.left + (lineSize * LINE_END_X_FACTOR) + ((iconRect.size.width + lineSize) * iconProgress),
-                iconRect.bottom + elevationPx * ELEVATION_LINE_FACTOR + switcherRadius * SWITCH_RADIUS_LINE_FACTOR - ((lineSize) * iconProgress)
+                iconRect.bottom + elevationPx * ELEVATION_LINE_FACTOR + switcherRadius * SEARCH_RADIUS_LINE_FACTOR - ((lineSize) * iconProgress)
             ),
             strokeWidth = lineSize * lineSqueezeFactor.toFloat(),
             cap = StrokeCap.Round

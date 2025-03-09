@@ -15,7 +15,7 @@ abstract class LiquidSearchActionListener {
         // Default implementation: Do nothing
     }
 
-    open fun onDragStart() {
+    open fun onSearchIconClick() {
         // Default implementation: Do nothing
     }
 }
@@ -33,7 +33,7 @@ val defaultLiquidSearchActionListener = object : LiquidSearchActionListener() {
         // Default implementation: Do nothing
     }
 
-    override fun onDragStart() {
+    override fun onSearchIconClick() {
         // Default implementation: Do nothing
     }
 }

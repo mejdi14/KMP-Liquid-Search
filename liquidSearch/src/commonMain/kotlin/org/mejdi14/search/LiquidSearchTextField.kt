@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import org.mejdi14.search.data.LiquidSearchConfig
 
@@ -29,18 +32,21 @@ internal fun BoxScope.LiquidSearchTextField(
     isChecked: MutableState<Boolean>,
     cursorOffset: MutableState<Int>,
     cancelIconIsVisible: MutableState<Boolean>,
-){
-
+) {
+    val coroutineScope = rememberCoroutineScope()
     BasicTextField(
         value = textFieldValue.value,
         cursorBrush = SolidColor(Color.Transparent),
-        textStyle = TextStyle(fontSize = (canvasLineSize.value * (when(isDesktop){
-            PlatformName.DESKTOP  -> 4f
-            PlatformName.WEB  -> {
-                if (isMobileDevice()) 2f else 4f
-            }
-            PlatformName.MOBILE -> 2f
-        })).sp, color = Color.White),
+        textStyle = TextStyle(
+            fontSize = (canvasLineSize.value * (when (isDesktop) {
+                PlatformName.DESKTOP -> 4f
+                PlatformName.WEB -> {
+                    if (isMobileDevice()) 2f else 4f
+                }
+
+                PlatformName.MOBILE -> 2f
+            })).sp, color = Color.White
+        ),
         onValueChange = { newText ->
             textFieldValue.value = newText
             cancelIconIsVisible.value = newText.text.isNotEmpty()
@@ -51,8 +57,21 @@ internal fun BoxScope.LiquidSearchTextField(
             .align(Alignment.CenterStart)
             .padding(end = (liquidSearchConfig.height / liquidSearchConfig.cancelIconSizeRatio) + (canvasLineSize.value.dp * 2.5f))
             .onFocusChanged { focusState ->
-                isChecked.value = focusState.isFocused
-                textFieldValue.value = TextFieldValue("")
+                when (focusState.isFocused) {
+                    true -> isChecked.value = focusState.isFocused
+                    false -> {
+                        coroutineScope.launch {
+                            if (liquidSearchConfig.clearSearchWhenUnFocus) {
+                                lastInputTime.value = Clock.System.now().toEpochMilliseconds()
+                                textFieldValue.value = TextFieldValue("")
+                                delay(200L)
+                                isChecked.value = focusState.isFocused
+                            }
+                        }
+                    }
+
+                    else -> {}
+                }
             }
             .graphicsLayer {
                 translationX = liquidSearchConfig.startSpacing

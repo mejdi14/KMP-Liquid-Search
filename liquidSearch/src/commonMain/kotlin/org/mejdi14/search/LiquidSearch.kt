@@ -60,7 +60,6 @@ fun LiquidSearch(
     modifier: Modifier = Modifier,
     liquidSearchConfig: LiquidSearchConfig = LiquidSearchConfig(),
     isChecked: MutableState<Boolean>,
-    iconElevation: Dp = 4.dp,
     liquidSearchController: LiquidSearchController = rememberLiquidSearchController()
 ) {
 
@@ -72,7 +71,6 @@ fun LiquidSearch(
     var canvasLineSize = remember { mutableStateOf(0f) }
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
         while (true) {
             currentTime.value = Clock.System.now().toEpochMilliseconds()
@@ -80,8 +78,8 @@ fun LiquidSearch(
         }
     }
 
-        CoroutineScope(Dispatchers.Main).launch {
-    (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
+    CoroutineScope(Dispatchers.Main).launch {
+        (liquidSearchController as? LiquidSearchControllerImpl)?.onResetSearch = {
             resetLiquidSearch(
                 textFieldValue,
                 isChecked,
@@ -89,7 +87,7 @@ fun LiquidSearch(
                 focusManager,
                 keyboardController
             )
-            }
+        }
     }
 
     val blinkingAlpha by if (isChecked.value) {
@@ -173,7 +171,6 @@ fun LiquidSearch(
                             alpha = if (isChecked.value) cursorAlpha else 1f
                         },
                     isActive = isChecked.value,
-                    switchElevation = iconElevation,
                     canvasLineSize,
                     liquidSearchConfig,
                     onCheckedChange = {
@@ -197,14 +194,14 @@ fun LiquidSearch(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                                liquidSearchConfig.liquidSearchActionListener.onCancelClicked()
-                                resetLiquidSearch(
-                                    textFieldValue,
-                                    isChecked,
-                                    cancelIconIsVisible,
-                                    focusManager,
-                                    keyboardController
-                                )
+                            liquidSearchConfig.liquidSearchActionListener.onCancelClicked()
+                            resetLiquidSearch(
+                                textFieldValue,
+                                isChecked,
+                                cancelIconIsVisible,
+                                focusManager,
+                                keyboardController
+                            )
                         },
                     canvasLineSize,
                     liquidSearchConfig
@@ -215,7 +212,7 @@ fun LiquidSearch(
     }
 }
 
-private  fun resetLiquidSearch(
+private fun resetLiquidSearch(
     textFieldValue: MutableState<TextFieldValue>,
     isChecked: MutableState<Boolean>,
     cancelIconIsVisible: MutableState<Boolean>,

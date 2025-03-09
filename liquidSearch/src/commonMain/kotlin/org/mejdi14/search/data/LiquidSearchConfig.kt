@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.mejdi14.search.data.listener.LiquidSearchActionListener
 import org.mejdi14.search.data.listener.defaultLiquidSearchActionListener
+import org.mejdi14.search.helpers.SEARCH_ANIMATION_DURATION
 
 data class LiquidSearchConfig(
     val height: Dp = 100.dp,
@@ -23,6 +24,9 @@ data class LiquidSearchConfig(
     val cancelIconColor: Color = Color.White,
     val iconActiveColor: Color = Color.Transparent,
     val iconInactiveColor: Color = backgroundColor,
+    val searchIconElevation: Dp = 4.dp,
+    val clearSearchWhenUnFocus: Boolean = true,
+    val searchIconAnimationDuration: Long = SEARCH_ANIMATION_DURATION,
     val liquidSearchActionListener: LiquidSearchActionListener = defaultLiquidSearchActionListener,
 
     )
