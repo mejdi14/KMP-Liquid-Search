@@ -40,6 +40,6 @@ jobs:
           echo "Publishing version: $VERSION_NAME"
 
           ./gradlew publish \
-            -PVERSION_NAME="$VERSION_NAME" \
+            -PVERSION_NAME="0.2.9" \
             -Dorg.gradle.internal.publish.checksums.insecure=true \
             -Dorg.gradle.internal.publish.signing.insecure=true

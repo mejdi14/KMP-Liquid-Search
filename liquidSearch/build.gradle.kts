@@ -18,6 +18,8 @@ plugins {
 
 // Define group for your artifacts
 group = "org.mejdi14.search"
+val versionName = project.findProperty("VERSION_NAME")?.toString() ?: "0.1.0-SNAPSHOT"
+version = versionName
 
 kotlin {
     androidTarget {
@@ -131,6 +133,9 @@ compose.desktop {
 }
 
 mavenPublishing {
+    coordinates(
+        version = versionName,
+    )
 
     pom {
         name.set("CMP Bottom Bar - TinyGlide")
