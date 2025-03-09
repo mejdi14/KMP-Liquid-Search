@@ -44,87 +44,40 @@ dependencies {
 
 ## :fire:How to use
 
-``` java
-                            var controller: AnimationController? by remember { mutableStateOf(null) }
-                            VanishComposable(
-                                Modifier,
-                                VanishOptions = VanishOptions(),
-                                effect = AnimationEffect.SHATTER,
-                                onControllerReady = {
-                                    controller = it
-                                }
-                            ) {
-                                // Your Composable
-                                ContentComposable()
-                            }
-```
 
-Animation Listener
------
-
-``` java
-// Start animation
-controller?.triggerVanish() {
-                        // Do something when animation finishes
-                    }
-                    
-// Reverse animation                    
-controller?.reset()
-```
-
-Animation types
------
-
-``` java
-    PIXELATE,
-    SWIRL,
-    SCATTER,
-    SHATTER,
-    WAVE,
-    LEFT_TO_RIGHT,
-    RIGHT_TO_LEFT,
-    UP,
-    DOWN,
-    DISSOLVE,
-    EXPLODE
-```
-
-Hold animation duration after separation
------
-
-``` java
- .timeBetweenAnimations
-```
-
-Configuration options
------
-
-``` java
-  pixelSize: size of each pixel or dot 
-  pixelSpacing: space between pixels when they are separated
-  pixelVelocity: velocity of the pixels
-  animationDuration: duration of the animation from start to finish
-  triggerFinishAt: use this if you want to trigger the end of animation a bit earlier (1f: wait to end, 0f: don't wait)
-```
-
-
-
-## 🤝 Contributing
-
-Contributions, issues and feature requests are welcome.<br />
-Feel free to check [issues page] if you want to contribute.<br />
-
-## Author
-
-👤 **Mejdi Hafiane**
-
-- profile: [@MejdiHafiane](https://twitter.com/mejdi141)
-
-## Show your support
-
-Please ⭐️ this repository if this project helped you!
-
-## 📝 License
-
-Copyright © 2019 [Mejdi Hafiane](https://github.com/mejdi14).<br />
-This project is [MIT](https://github.com/mejdi14/readme-md-generator/blob/master/LICENSE) licensed.
+:fire: How to Use
+The LiquidSearch component provides a beautiful animated search interface for your Jetpack Compose apps:
+val isChecked = remember { mutableStateOf(false) }
+val liquidSearchController = rememberLiquidSearchController()
+LiquidSearch(
+modifier = Modifier,
+liquidSearchConfig = LiquidSearchConfig(),
+isChecked = isChecked,
+liquidSearchController = liquidSearchController
+)
+Using the Controller
+The LiquidSearch component comes with a controller that allows you to programmatically reset the search:
+// Reset the search field and state
+liquidSearchController.resetSearch()
+Customization Options
+LiquidSearch is highly customizable with the LiquidSearchConfig class:
+LiquidSearch(
+modifier = Modifier.fillMaxWidth(),
+liquidSearchConfig = LiquidSearchConfig(
+height = 80.dp,                        // Height of the search bar
+backgroundColor = Color(0xFF6147ff),   // Background color
+shape = RoundedCornerShape(20.dp),     // Shape of the search bar
+padding = PaddingValues(16.dp),        // Padding inside the search bar
+startSpacing = 40f,                    // Text starting position
+cancelIconSizeRatio = 4,               // Size ratio for the cancel icon
+searchIconColor = Color.White,         // Color of the search icon
+cancelIconColor = Color.White,         // Color of the cancel icon
+iconActiveColor = Color.Transparent,   // Color when icon is active
+iconInactiveColor = Color(0xFF6147ff), // Color when icon is inactive
+searchIconElevation = 4.dp,            // Elevation of the search icon
+clearSearchWhenUnFocus = true,         // Clear search on focus loss
+liquidSearchIconPosition = LiquidSearchIconPosition.LEFT, // Icon position
+),
+isChecked = isChecked,
+liquidSearchController = liquidSearchController
+)
