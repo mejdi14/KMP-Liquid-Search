@@ -16,11 +16,8 @@ plugins {
     signing
 }
 
-// Get version from environment or use default
-val versionName = System.getenv("VERSION_NAME") ?: "0.1.0-SNAPSHOT"
 // Define group for your artifacts
 group = "org.mejdi14.search"
-version = versionName
 
 kotlin {
     androidTarget {
