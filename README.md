@@ -32,7 +32,7 @@
 
 This library was inspired by [Oleg Frolov](https://dribbble.com/shots/4605344-Search-icon-interaction) beautiful work.
 
-## Installation
+## 🔨 Installation
 
 Add this to your module's `build.gradle` file:
 
