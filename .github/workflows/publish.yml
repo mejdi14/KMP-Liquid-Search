@@ -43,8 +43,6 @@ jobs:
           RELEASE_SIGNING_ENABLED: true
           # Version extraction
           VERSION_NAME: ${{ github.ref_name }}
-          # Artifact ID
-          ORG_GRADLE_PROJECT_POM_ARTIFACT_ID: liquid-Search
         run: |
           # Extract version from the git tag (e.g., "v0.2.8" -> "0.2.8")
           VERSION_NAME=${GITHUB_REF#refs/tags/v}
