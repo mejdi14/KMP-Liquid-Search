@@ -45,39 +45,20 @@ dependencies {
 ## :fire:How to use
 
 
-:fire: How to Use
-The LiquidSearch component provides a beautiful animated search interface for your Jetpack Compose apps:
-val isChecked = remember { mutableStateOf(false) }
-val liquidSearchController = rememberLiquidSearchController()
-LiquidSearch(
-modifier = Modifier,
-liquidSearchConfig = LiquidSearchConfig(),
-isChecked = isChecked,
-liquidSearchController = liquidSearchController
-)
-Using the Controller
-The LiquidSearch component comes with a controller that allows you to programmatically reset the search:
-// Reset the search field and state
-liquidSearchController.resetSearch()
-Customization Options
-LiquidSearch is highly customizable with the LiquidSearchConfig class:
-LiquidSearch(
-modifier = Modifier.fillMaxWidth(),
-liquidSearchConfig = LiquidSearchConfig(
-height = 80.dp,                        // Height of the search bar
-backgroundColor = Color(0xFF6147ff),   // Background color
-shape = RoundedCornerShape(20.dp),     // Shape of the search bar
-padding = PaddingValues(16.dp),        // Padding inside the search bar
-startSpacing = 40f,                    // Text starting position
-cancelIconSizeRatio = 4,               // Size ratio for the cancel icon
-searchIconColor = Color.White,         // Color of the search icon
-cancelIconColor = Color.White,         // Color of the cancel icon
-iconActiveColor = Color.Transparent,   // Color when icon is active
-iconInactiveColor = Color(0xFF6147ff), // Color when icon is inactive
-searchIconElevation = 4.dp,            // Elevation of the search icon
-clearSearchWhenUnFocus = true,         // Clear search on focus loss
-liquidSearchIconPosition = LiquidSearchIconPosition.LEFT, // Icon position
-),
-isChecked = isChecked,
-liquidSearchController = liquidSearchController
-)
+## LiquidSearchConfig Properties
+
+The `LiquidSearchConfig` class allows you to customize the appearance and behavior of the liquid search. Below is a table of its properties:
+
+| Field                        | Type                              | Default Value                      | Description                                                   |
+|------------------------------|----------------------------------|------------------------------------|---------------------------------------------------------------|
+| `height`                     | `Dp`                              | `60.dp`                            | The height of the search bar.                                |
+| `backgroundColor`             | `Color`                           | `Color(0xFF6147ff)`               | Background color of the search bar.                          |
+| `cancelIconColor`             | `Color`                           | `Color.White`                      | Color of the cancel (X) icon.                                |
+| `searchIconColor`             | `Color`                           | `Color.White`                      | Color of the search icon.                                    |
+| `iconActiveColor`             | `Color`                           | `Color.Transparent`                | Color when the search is active.                             |
+| `iconInactiveColor`           | `Color`                           | `Color(0xFF6147ff)`               | Color when the search is inactive.                           |
+| `searchIconAnimationDuration` | `Long`                            | `300`                              | Animation duration for the search icon.                      |
+| `cancelIconSizeRatio`         | `Int`                             | `5`                                | The size ratio for the cancel icon.                          |
+| `clearSearchWhenUnFocus`      | `Boolean`                         | `true`                             | Whether to clear search when it loses focus.                 |
+| `liquidSearchActionListener`  | `LiquidSearchActionListener`      | `defaultLiquidSearchActionListener` | Listener for search interactions. |
+
