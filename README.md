@@ -79,7 +79,7 @@ fun SampleLiquidSearch() {
         liquidSearchController = controller
     )
 }
-
+```
 
 ## LiquidSearchConfig Properties
 
@@ -118,6 +118,8 @@ val searchConfig = LiquidSearchConfig(
         }
     }
 )
+```
+
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome.<br />
