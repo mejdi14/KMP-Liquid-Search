@@ -133,9 +133,6 @@ compose.desktop {
 }
 
 mavenPublishing {
-    coordinates(
-        version = versionName,
-    )
 
     pom {
         name.set("CMP Bottom Bar - TinyGlide")
