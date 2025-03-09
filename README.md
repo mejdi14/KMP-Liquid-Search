@@ -42,99 +42,89 @@ dependencies {
     implementation("io.github.mejdi14:KMP-Liquid-Search:0.2.3")}
 ```
 
-:fire: How to Use
-kotlinCopy// Create a mutable state to track the search state
-val isChecked = remember { mutableStateOf(false) }
+## :fire:How to use
 
-LiquidSearch(
-    modifier = Modifier.fillMaxWidth(),
-    liquidSearchConfig = LiquidSearchConfig(
-        height = 60.dp,
-        backgroundColor = Color(0xFF6147ff),
-        startSpacing = 50f,
-        searchIconColor = Color.White,
-        cancelIconColor = Color.White
-    ),
-    isChecked = isChecked,
-    // Optional: provide a custom controller
-    liquidSearchController = rememberLiquidSearchController()
-)
+``` java
+                            var controller: AnimationController? by remember { mutableStateOf(null) }
+                            VanishComposable(
+                                Modifier,
+                                VanishOptions = VanishOptions(),
+                                effect = AnimationEffect.SHATTER,
+                                onControllerReady = {
+                                    controller = it
+                                }
+                            ) {
+                                // Your Composable
+                                ContentComposable()
+                            }
+```
 
-LiquidSearchConfig Properties
-The LiquidSearchConfig class allows you to customize the appearance and behavior of the liquid search. Below is a table of its properties:
-FieldTypeDefault ValueDescriptionheightDp100.dpThe height of the search bar.widthDp?nullThe width of the search bar (null for fillMaxWidth).shapeShapeRoundedCornerShape(25.dp)The shape of the search bar.backgroundColorColorColor(0xFF6147ff)The background color of the search bar.paddingPaddingValuesPaddingValues(20.dp)The padding inside the search bar.startSpacingFloat30fThe horizontal spacing at the start of the text field.textFieldConfigTextFieldConfigTextFieldConfig()Configuration for the text field.liquidSearchIconPositionLiquidSearchIconPositionLiquidSearchIconPosition.LEFTThe position of the search icon.cancelIconSizeRatioInt5The size ratio for the cancel icon.searchIconColorColorColor.WhiteThe color of the search icon.cancelIconColorColorColor.WhiteThe color of the cancel icon.iconActiveColorColorColor.TransparentThe color of the icon when active.iconInactiveColorColorbackgroundColorThe color of the icon when inactive.searchIconElevationDp4.dpThe elevation of the search icon.clearSearchWhenUnFocusBooleantrueWhether to clear search when the field loses focus.searchIconAnimationDurationLongSEARCH_ANIMATION_DURATIONThe duration of the search icon animation.liquidSearchActionListenerLiquidSearchActionListenerdefaultLiquidSearchActionListenerListener for search actions.
-TextFieldConfig Properties
-The TextFieldConfig class allows you to customize the text field used in the search bar:
-FieldTypeDefault ValueDescriptiontextStyleTextStyle?nullThe style of the text in the search field.singleLineBooleantrueWhether the text field is single line.decorationBox@Composable FunctionBasic Box with CenterStart alignmentDecoration box for the text field.
+Animation Listener
+-----
 
-Custom Action Listener
-You can create a custom action listener to respond to search events:
-kotlinCopyval customActionListener = object : LiquidSearchActionListener {
-    override fun onSearchIconClick() {
-        // Handle search icon click
-    }
-    
-    override fun onCancelClicked() {
-        // Handle cancel button click
-    }
-    
-    override fun onStateChange(isActive: Boolean) {
-        // Handle state changes
-    }
-}
+``` java
+// Start animation
+controller?.triggerVanish() {
+                        // Do something when animation finishes
+                    }
+                    
+// Reverse animation                    
+controller?.reset()
+```
 
-LiquidSearch(
-    liquidSearchConfig = LiquidSearchConfig(
-        liquidSearchActionListener = customActionListener
-    ),
-    isChecked = isChecked
-)
+Animation types
+-----
 
-Using a Controller
-The library provides a controller that allows you to programmatically control the search bar:
-kotlinCopyval controller = rememberLiquidSearchController()
+``` java
+    PIXELATE,
+    SWIRL,
+    SCATTER,
+    SHATTER,
+    WAVE,
+    LEFT_TO_RIGHT,
+    RIGHT_TO_LEFT,
+    UP,
+    DOWN,
+    DISSOLVE,
+    EXPLODE
+```
 
-// In your composable
-LiquidSearch(
-    liquidSearchController = controller,
-    isChecked = isChecked
-)
+Hold animation duration after separation
+-----
 
-// Later, to reset the search
-controller.resetSearch()
+``` java
+ .timeBetweenAnimations
+```
 
-Cross-Platform Support
-KMP Liquid Search is designed to work seamlessly across different platforms:
+Configuration options
+-----
 
-Mobile (Android/iOS)
-Desktop
-Web
-
-The library automatically adapts to different platforms for optimal user experience.
-kotlinCopy// The library detects the platform and adjusts accordingly
-val fontSize = (canvasLineSize.value * (when (isDesktop) {
-    PlatformName.DESKTOP -> 4f
-    PlatformName.WEB -> {
-        if (isMobileDevice()) 2f else 4f
-    }
-    PlatformName.MOBILE -> 2f
-})).sp
-
-🤝 Contributing
-Contributions, issues, and feature requests are welcome!<br />
-Feel free to check the issues page if you want to contribute.
-
-Author
-👤 Mejdi Hafiane
-
-Profile: @MejdiHafiane
+``` java
+  pixelSize: size of each pixel or dot 
+  pixelSpacing: space between pixels when they are separated
+  pixelVelocity: velocity of the pixels
+  animationDuration: duration of the animation from start to finish
+  triggerFinishAt: use this if you want to trigger the end of animation a bit earlier (1f: wait to end, 0f: don't wait)
+```
 
 
-Show Your Support
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome.<br />
+Feel free to check [issues page] if you want to contribute.<br />
+
+## Author
+
+👤 **Mejdi Hafiane**
+
+- profile: [@MejdiHafiane](https://twitter.com/mejdi141)
+
+## Show your support
+
 Please ⭐️ this repository if this project helped you!
 
-📝 License
-Copyright © 2023 Mejdi Hafiane.<br />
-This project is MIT licensed.
+## 📝 License
 
-This README provides a clear and structured overview of the KMP-Liquid-Search library, making it easy for users to understand and integrate into their projects.
+Copyright © 2019 [Mejdi Hafiane](https://github.com/mejdi14).<br />
+This project is [MIT](https://github.com/mejdi14/readme-md-generator/blob/master/LICENSE) licensed.
